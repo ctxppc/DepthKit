@@ -16,7 +16,7 @@ public struct PostOrderFlatteningBidirectionalCollection<RecursiveCollection : B
 	public let root: RecursiveCollection
 	
 	/// A function that determines whether a collection is a leaf node, given the index path of the node.
-	public var isLeaf: (Index.Path) -> Bool
+	public let isLeaf: (Index.Path) -> Bool
 	
 }
 
@@ -27,7 +27,7 @@ extension PostOrderFlatteningBidirectionalCollection {
 	/// - Parameter root: The root collection that is being flattened.
 	/// - Parameter maximumDepth: The maximum depth, inclusive. The root collection is at depth 0. If negative, the flattening collection is empty.
 	public init(root: RecursiveCollection, maximumDepth: Int) {
-		self.init(root: root, isLeaf: { path in path.count <= maximumDepth })
+		self.init(root: root, isLeaf: { path in path.count >= maximumDepth })
 	}
 	
 }

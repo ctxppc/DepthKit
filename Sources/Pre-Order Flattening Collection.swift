@@ -16,7 +16,7 @@ public struct PreOrderFlatteningBidirectionalCollection<RecursiveCollection : Bi
 	public let root: RecursiveCollection
 	
 	/// A function that determines whether a collection is a leaf node, given the index path of the node.
-	public var isLeaf: (Index.Path) -> Bool
+	public let isLeaf: (Index.Path) -> Bool
 	
 }
 

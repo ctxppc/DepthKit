@@ -68,6 +68,15 @@ class PostOrderFlatteningCollectionsTestCase : XCTestCase {
 		
 	}
 	
+	func testDepthLimitedTree() {
+		
+		let flattenedTree = tree.flattenedInPostOrder(maximumDepth: 2)
+		let elements = flattenedTree.map { $0.value }
+		
+		XCTAssert(elements == ["A", "D", "B", "I", "G", "F"])
+		
+	}
+	
 	func testInversedTree() {
 		
 		let flattenedTree = tree.flattenedInPostOrder().reversed()

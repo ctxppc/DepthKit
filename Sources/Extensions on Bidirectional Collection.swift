@@ -1,5 +1,34 @@
 // DepthKit © 2017 Constantino Tsarouhas
 
+extension BidirectionalCollection where SubSequence.Iterator.Element == Iterator.Element {
+	
+	/// Returns the last element and the other elements of the collection, separately.
+	///
+	/// - Complexity: O(1)
+	///
+	/// - Returns: The last element `tail` of `self` and the subsequence `head` of elements that precede `tail` in `self`; or `nil` if `self` is empty.
+	public func splittingLast() -> (head: SubSequence, tail: Iterator.Element)? {
+		guard let tail = last else { return nil }
+		return (head: prefix(upTo: index(before: endIndex)), tail: tail)
+	}
+	
+}
+
+extension BidirectionalCollection where SubSequence : BidirectionalCollection, SubSequence.Iterator.Element == Iterator.Element, SubSequence == SubSequence.SubSequence {
+	
+	/// Returns a sequence over every element, from the last to the first, and the subsequence of elements preceding that element.
+	///
+	/// - Returns: A sequence of every element `tail` in `self`, from the last to the first, and the subsequence `head` of elements that precede `tail` in `self`.
+	public func unfoldingBackward() -> UnfoldSequence<(SubSequence, Iterator.Element), SubSequence> {
+		return sequence(state: prefix(upTo: endIndex)) { subsequence in
+			guard let (head, tail) = subsequence.splittingLast() else { return nil }
+			subsequence = head
+			return (head, tail)
+		}
+	}
+	
+}
+
 extension BidirectionalCollection where Iterator.Element : Equatable {
 	
 	/// Returns a Boolean value indicating whether the collection's last elements are the same as the elements from another collection.
@@ -17,29 +46,6 @@ extension BidirectionalCollection where Iterator.Element : Equatable {
 		
 		return true
 		
-	}
-	
-}
-
-extension BidirectionalCollection where SubSequence == Self {
-	
-	/// Returns a sequence of popped last elements and the resulting shortened collections.
-	///
-	/// - Returns: A sequence of pairs of the shortened collection and the popped element.
-	public func unfoldingBackwards() -> UnfoldSequence<(Self, Iterator.Element), Self> {
-		return sequence(state: self) { collection -> (Self, Iterator.Element)? in
-			guard let element = collection.popLast() else { return nil }
-			return (collection, element)
-		}
-	}
-	
-	/// Returns the popped last element and the resulting shortened collection.
-	///
-	/// - Returns: A tuple containing `self` except for the last element, and the last element; or `nil` if `self` is empty.
-	public func poppingLast() -> (poppedCollection: Self, poppedElement: Iterator.Element)? {
-		var collection = self
-		guard let element = collection.popLast() else { return nil }
-		return (collection, element)
 	}
 	
 }

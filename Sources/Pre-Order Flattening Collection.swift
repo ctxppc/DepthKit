@@ -78,7 +78,8 @@ extension PreOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 			return .some(indexPath: indexPathOfTrailingCollection(containedInCollectionAt: []))
 		}
 		
-		guard let (indexPathOfParent, indexOfCurrent) = indexPath.poppingLast() else { preconditionFailure("Index out of bounds") }
+		guard let (indexPathOfParentSlice, indexOfCurrent) = indexPath.splittingLast() else { preconditionFailure("Index out of bounds") }
+		let indexPathOfParent = Array(indexPathOfParentSlice)
 		
 		let parent = self[indexPathOfParent]
 		if indexOfCurrent > parent.startIndex {
@@ -98,7 +99,8 @@ extension PreOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 			return .some(indexPath: indexPathOfFirstChild)
 		}
 		
-		for (indexPathOfParent, indexOfCurrent) in indexPath.unfoldingBackwards() {	// indexPathOfParent becomes empty when parent is the root; root itself never is current
+		for (indexPathOfParentSlice, indexOfCurrent) in indexPath.unfoldingBackward() {	// indexPathOfParent becomes empty when parent is the root; root itself never is current
+			let indexPathOfParent = Array(indexPathOfParentSlice)
 			let parent = self[indexPathOfParent]
 			let indexOfSibling = parent.index(after: indexOfCurrent)
 			if indexOfSibling < parent.endIndex {

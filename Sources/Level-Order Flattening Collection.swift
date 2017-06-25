@@ -110,7 +110,8 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 	/// - Returns: The previous index path that is at the same depth as `indexPath`, or `nil` if there is no such index path.
 	private func indexPath(before indexPathOfCurrent: Index.Path) -> Index.Path? {
 		
-		guard let (indexPathOfParent, indexOfCurrent) = indexPathOfCurrent.poppingLast() else { return nil }
+		guard let (indexPathOfParentSlice, indexOfCurrent) = indexPathOfCurrent.splittingLast() else { return nil }
+		let indexPathOfParent = Array(indexPathOfParentSlice)
 		
 		let parent = self[indexPathOfParent]
 		if indexOfCurrent > parent.startIndex {
@@ -138,7 +139,8 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 	/// - Returns: The next index path that is at the same depth as `indexPath`, or `nil` if there is no such index path.
 	private func indexPath(after indexPathOfCurrent: Index.Path) -> Index.Path? {
 		
-		guard let (indexPathOfParent, indexOfCurrent) = indexPathOfCurrent.poppingLast() else { return nil }
+		guard let (indexPathOfParentSlice, indexOfCurrent) = indexPathOfCurrent.splittingLast() else { return nil }
+		let indexPathOfParent = Array(indexPathOfParentSlice)
 		
 		let parent = self[indexPathOfParent]
 		let indexOfSibling = parent.index(after: indexOfCurrent)

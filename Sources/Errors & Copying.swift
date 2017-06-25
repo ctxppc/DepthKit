@@ -9,7 +9,7 @@ import Foundation
 ///		func doingSomething() -> Something {
 ///			unimplemented
 ///		}
-var unimplemented: Never {
+public var unimplemented: Never {
 	fatalError("Unimplemented code path assertion failure")
 }
 
@@ -24,7 +24,7 @@ var unimplemented: Never {
 ///				default:				impossible
 ///			}
 ///		}
-var impossible: Never {
+public var impossible: Never {
 	fatalError("Impossible code path assertion failure")
 }
 
@@ -37,7 +37,7 @@ var impossible: Never {
 ///		- mutator: A closure that performs mutation.
 ///
 /// - Returns: A copy of `subject` after being mutated by `mutator`.
-func withCopy<S>(of subject: S, mutator: (inout S) throws -> Any) rethrows -> S {
+public func withCopy<S>(of subject: S, mutator: (inout S) throws -> Any) rethrows -> S {
 	var subject = subject
 	_ = try mutator(&subject)
 	return subject
@@ -53,7 +53,7 @@ func withCopy<S>(of subject: S, mutator: (inout S) throws -> Any) rethrows -> S 
 ///		- argument: The argument to the subject-qualified mutator.
 ///
 /// - Returns: A copy of `subject` after being mutated by `mutator`.
-func withCopy<S, A>(of subject: S, mutator: (inout S) throws -> (A) -> Any, argument: A) rethrows -> S {
+public func withCopy<S, A>(of subject: S, mutator: (inout S) throws -> (A) -> Any, argument: A) rethrows -> S {
 	var subject = subject
 	_ = try mutator(&subject)(argument)
 	return subject
@@ -70,7 +70,7 @@ func withCopy<S, A>(of subject: S, mutator: (inout S) throws -> (A) -> Any, argu
 ///		- secondArgument: The second argument to the subject-qualified mutator.
 ///
 /// - Returns: A copy of `subject` after being mutated by `mutator`.
-func withCopy<S, A, B>(of subject: S, mutator: (inout S) throws -> (A, B) -> Any, arguments firstArgument: A, _ secondArgument: B) rethrows -> S {
+public func withCopy<S, A, B>(of subject: S, mutator: (inout S) throws -> (A, B) -> Any, arguments firstArgument: A, _ secondArgument: B) rethrows -> S {
 	var subject = subject
 	_ = try mutator(&subject)(firstArgument, secondArgument)
 	return subject
@@ -88,7 +88,7 @@ func withCopy<S, A, B>(of subject: S, mutator: (inout S) throws -> (A, B) -> Any
 ///		- thirdArgument: The third argument to the subject-qualified mutator.
 ///
 /// - Returns: A copy of `subject` after being mutated by `mutator`.
-func withCopy<S, A, B, C>(of subject: S, mutator: (inout S) throws -> (A, B, C) -> Any, arguments firstArgument: A, _ secondArgument: B, _ thirdArgument: C) rethrows -> S {
+public func withCopy<S, A, B, C>(of subject: S, mutator: (inout S) throws -> (A, B, C) -> Any, arguments firstArgument: A, _ secondArgument: B, _ thirdArgument: C) rethrows -> S {
 	var subject = subject
 	_ = try mutator(&subject)(firstArgument, secondArgument, thirdArgument)
 	return subject

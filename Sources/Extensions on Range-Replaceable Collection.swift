@@ -20,4 +20,27 @@ extension RangeReplaceableCollection {
 		return withCopy(of: self, mutator: Self.append, argument: other)
 	}
 	
+	/// Returns a copy of the collection after inserting an element at a given index.
+	///
+	/// - Parameter insertedElement: The element to insert.
+	/// - Parameter index: The index of the inserted element.
+	///
+	/// - Returns: A copy of `self` after inserting `insertedElement` at `index`.
+	public func inserting(_ insertedElement: Iterator.Element, at index: Index) -> Self {
+		return withCopy(of: self) { (collection: inout Self) in
+			collection.insert(insertedElement, at: index)
+		}
+	}
+	
+	/// Returns a copy of the collection after removing an element at a given index.
+	///
+	/// - Parameter index: The index of the removed element.
+	///
+	/// - Returns: A copy of `self` after removing the element at `index`.
+	public func removing(at index: Index) -> Self {
+		return withCopy(of: self) { (collection: inout Self) in
+			collection.remove(at: index)
+		}
+	}
+	
 }

@@ -1,6 +1,6 @@
 // DepthKit © 2017 Constantino Tsarouhas
 
-extension BidirectionalCollection where SubSequence.Iterator.Element == Iterator.Element {
+extension BidirectionalCollection {
 	
 	/// Returns the last element and the other elements of the collection, separately.
 	///
@@ -14,7 +14,7 @@ extension BidirectionalCollection where SubSequence.Iterator.Element == Iterator
 	
 }
 
-extension BidirectionalCollection where SubSequence : BidirectionalCollection, SubSequence.Iterator.Element == Iterator.Element, SubSequence == SubSequence.SubSequence {
+extension BidirectionalCollection where SubSequence : BidirectionalCollection {
 	
 	/// Returns a sequence over every element, from the last to the first, and the subsequence of elements preceding that element.
 	///

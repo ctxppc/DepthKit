@@ -1,10 +1,7 @@
 // DepthKit © 2017 Constantino Tsarouhas
 
 /// A bidirectional collection that flattens a recursive bidirectional collection by visiting all subcollections in level-order.
-public struct LevelOrderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where
-	RecursiveCollection.Iterator.Element == RecursiveCollection,
-	RecursiveCollection.Indices : BidirectionalCollection,
-	RecursiveCollection.Indices.Iterator.Element == RecursiveCollection.Index {
+public struct LevelOrderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where RecursiveCollection.Iterator.Element == RecursiveCollection, RecursiveCollection.Indices : BidirectionalCollection {
 	
 	/// Creates a flattening collection over a collection.
 	///
@@ -299,7 +296,7 @@ extension LevelOrderFlatteningBidirectionalCollection.Index : Comparable {
 	
 }
 
-extension BidirectionalCollection where Iterator.Element == Self, Indices : BidirectionalCollection, Indices.Iterator.Element == Index {
+extension BidirectionalCollection where Iterator.Element == Self, Indices : BidirectionalCollection {
 	
 	/// Returns a level-order flattening collection over the collection.
 	///

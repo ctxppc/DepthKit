@@ -1,6 +1,6 @@
 // DepthKit © 2017 Constantino Tsarouhas
 
-extension Collection where SubSequence.Iterator.Element == Iterator.Element {
+extension Collection {
 	
 	/// Returns the first element and the other elements of the collection, separately.
 	///
@@ -14,7 +14,7 @@ extension Collection where SubSequence.Iterator.Element == Iterator.Element {
 	
 }
 
-extension Collection where SubSequence : Collection, SubSequence.Iterator.Element == Iterator.Element, SubSequence == SubSequence.SubSequence {
+extension Collection where SubSequence : Collection {
 	
 	/// Returns a sequence over every element and the subsequence of elements following that element.
 	///

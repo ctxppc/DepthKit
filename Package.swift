@@ -11,5 +11,6 @@ let package = Package(
 	targets: [
 		.target(name: "DepthKit", path: "Sources"),
 		.testTarget(name: "DepthKit Tests", dependencies: ["DepthKit"], path: "Tests")
-	]
+	],
+	swiftLanguageVersions: [4]
 )

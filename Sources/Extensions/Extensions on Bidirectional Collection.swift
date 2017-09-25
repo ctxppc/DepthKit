@@ -20,7 +20,7 @@ extension BidirectionalCollection where SubSequence : BidirectionalCollection {
 	///
 	/// - Returns: A sequence of every element `tail` in `self`, from the last to the first, and the subsequence `head` of elements that precede `tail` in `self`.
 	public func unfoldingBackward() -> UnfoldSequence<(SubSequence, Iterator.Element), SubSequence> {
-		return sequence(state: prefix(upTo: endIndex)) { subsequence in
+		return sequence(state: prefix(upTo: endIndex)) { (subsequence: inout SubSequence) in
 			guard let (head, tail) = subsequence.splittingLast() else { return nil }
 			subsequence = head
 			return (head, tail)

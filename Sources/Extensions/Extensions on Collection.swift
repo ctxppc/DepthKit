@@ -20,7 +20,7 @@ extension Collection where SubSequence : Collection {
 	///
 	/// - Returns: A sequence of every element `head` in `self` and the subsequence `tail` of elements that follow `head` in `self`.
 	func unfoldingForward() -> UnfoldSequence<(Iterator.Element, SubSequence), SubSequence> {
-		return sequence(state: suffix(from: startIndex)) { subsequence in
+		return sequence(state: suffix(from: startIndex)) { (subsequence: inout SubSequence) in
 			guard let (head, tail) = subsequence.splittingFirst() else { return nil }
 			subsequence = tail
 			return (head, tail)

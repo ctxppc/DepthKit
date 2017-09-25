@@ -66,7 +66,7 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 	/// Accesses the collection at given index path.
 	///
 	/// - Parameter indexPath: The index path. The empty path refers to root.
-	private subscript <IndexPath : Sequence> (indexPath: IndexPath) -> RecursiveCollection where IndexPath.Element == RecursiveCollection.Index {
+	private subscript <IndexPath : Sequence>(indexPath: IndexPath) -> RecursiveCollection where IndexPath.Element == RecursiveCollection.Index {
 		return indexPath.reduce(root) { (subcollection, index) in
 			subcollection[index]
 		}

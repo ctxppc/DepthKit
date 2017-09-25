@@ -83,8 +83,9 @@ class LevelOrderFlatteningCollectionsTestCase : XCTestCase {
 			])
 		])
 		
-		let flattenedTree = tree.flattenedInLevelOrder().reversed()
-		let elements = flattenedTree.map { $0.value }
+		let flattenedTree = tree.flattenedInLevelOrder()
+		let inversedTree = flattenedTree.reversed()
+		let elements = inversedTree.map { $0.value }
 		
 		XCTAssert(elements == ["F", "B", "G", "A", "D", "I", "C", "X", "E", "H"].reversed())
 		

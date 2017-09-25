@@ -7,7 +7,7 @@ extension RangeReplaceableCollection {
 	/// - Parameter other: The sequence whose elements to append.
 	///
 	/// - Returns: A copy of the collection with the contents of `other` appended to it.
-	public func appending(_ element: Iterator.Element) -> Self {
+	public func appending(_ element: Element) -> Self {
 		return withCopy(of: self, mutator: Self.append, argument: element)
 	}
 	
@@ -16,7 +16,7 @@ extension RangeReplaceableCollection {
 	/// - Parameter other: The sequence whose elements to append.
 	///
 	/// - Returns: A copy of the collection with the contents of `other` appended to it.
-	public func appending<S : Sequence>(contentsOf other: S) -> Self where S.Iterator.Element == Iterator.Element {
+	public func appending<S : Sequence>(contentsOf other: S) -> Self where S.Element == Element {
 		return withCopy(of: self, mutator: Self.append, argument: other)
 	}
 	
@@ -26,7 +26,7 @@ extension RangeReplaceableCollection {
 	/// - Parameter index: The index of the inserted element.
 	///
 	/// - Returns: A copy of `self` after inserting `insertedElement` at `index`.
-	public func inserting(_ insertedElement: Iterator.Element, at index: Index) -> Self {
+	public func inserting(_ insertedElement: Element, at index: Index) -> Self {
 		return withCopy(of: self) { (collection: inout Self) in
 			collection.insert(insertedElement, at: index)
 		}

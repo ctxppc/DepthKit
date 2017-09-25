@@ -10,7 +10,7 @@ public protocol OrderedCollection : Collection {
 	/// - Parameter upperBound: The element that is strictly greater than every element in the returned subsequence.
 	///
 	/// - Returns: A subsequence of all elements that are strictly smaller than `upperBound`.
-	func prefix(upTo upperBound: Iterator.Element) -> SubSequence
+	func prefix(upTo upperBound: Element) -> SubSequence
 	
 	/// Returns an ordered subsequence of all elements that are greater than or equal to a given element.
 	///
@@ -19,7 +19,7 @@ public protocol OrderedCollection : Collection {
 	/// - Parameter lowerBound: The element that is smaller than or equal to every element in the returned subsequence.
 	///
 	/// - Returns: A subsequence of all elements that are greater than or equal to `lowerBound`.
-	func suffix(from lowerBound: Iterator.Element) -> SubSequence
+	func suffix(from lowerBound: Element) -> SubSequence
 	
 }
 

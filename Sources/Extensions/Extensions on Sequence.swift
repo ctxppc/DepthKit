@@ -1,6 +1,6 @@
 // DepthKit © 2017 Constantino Tsarouhas
 
-extension Sequence where Iterator.Element : Comparable {
+extension Sequence where Element : Comparable {
 	
 	/// Returns a Boolean value indicating whether the sequence precedes another sequence in a lexicographical ordering, ordering a shorter sequence after the longer one when the short sequence is a prefix of the longer sequence.
 	///
@@ -8,7 +8,7 @@ extension Sequence where Iterator.Element : Comparable {
 	/// - Parameter orderingShorterSequencesAfter: The unit value.
 	
 	/// - Returns: `true` if `self` precedes `self` in a lexicographical ordering and `self` is longer than `other`; otherwise, `false`.
-	internal func lexicographicallyPrecedes<OtherSequence : Sequence>(_ other: OtherSequence, orderingShorterSequencesAfter: ()) -> Bool where OtherSequence.Iterator.Element == Iterator.Element {
+	internal func lexicographicallyPrecedes<OtherSequence : Sequence>(_ other: OtherSequence, orderingShorterSequencesAfter: ()) -> Bool where OtherSequence.Element == Element {
 		
 		var elementsOfFirstSequence = self.makeIterator()
 		var elementsOfSecondSequence = other.makeIterator()

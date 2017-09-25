@@ -7,7 +7,7 @@ extension BidirectionalCollection {
 	/// - Complexity: O(1)
 	///
 	/// - Returns: The last element `tail` of `self` and the subsequence `head` of elements that precede `tail` in `self`; or `nil` if `self` is empty.
-	public func splittingLast() -> (head: SubSequence, tail: Iterator.Element)? {
+	public func splittingLast() -> (head: SubSequence, tail: Element)? {
 		guard let tail = last else { return nil }
 		return (head: prefix(upTo: index(before: endIndex)), tail: tail)
 	}
@@ -19,7 +19,7 @@ extension BidirectionalCollection where SubSequence : BidirectionalCollection {
 	/// Returns a sequence over every element, from the last to the first, and the subsequence of elements preceding that element.
 	///
 	/// - Returns: A sequence of every element `tail` in `self`, from the last to the first, and the subsequence `head` of elements that precede `tail` in `self`.
-	public func unfoldingBackward() -> UnfoldSequence<(SubSequence, Iterator.Element), SubSequence> {
+	public func unfoldingBackward() -> UnfoldSequence<(SubSequence, Element), SubSequence> {
 		return sequence(state: prefix(upTo: endIndex)) { (subsequence: inout SubSequence) in
 			guard let (head, tail) = subsequence.splittingLast() else { return nil }
 			subsequence = head
@@ -29,14 +29,14 @@ extension BidirectionalCollection where SubSequence : BidirectionalCollection {
 	
 }
 
-extension BidirectionalCollection where Iterator.Element : Equatable {
+extension BidirectionalCollection where Element : Equatable {
 	
 	/// Returns a Boolean value indicating whether the collection's last elements are the same as the elements from another collection.
 	///
 	/// - Parameter suffix: The elements.
 	///
 	/// - Returns: `true` if the last elements in `self` are `suffix`, otherwise `false`.
-	public func ends<Suffix : BidirectionalCollection>(with suffix: Suffix) -> Bool where Suffix.Iterator.Element == Iterator.Element, Suffix.IndexDistance == IndexDistance {
+	public func ends<Suffix : BidirectionalCollection>(with suffix: Suffix) -> Bool where Suffix.Element == Element, Suffix.IndexDistance == IndexDistance {
 		
 		guard self.count >= suffix.count else { return false }
 		
@@ -50,7 +50,7 @@ extension BidirectionalCollection where Iterator.Element : Equatable {
 	
 }
 
-extension BidirectionalCollection where Iterator.Element == Self {
+extension BidirectionalCollection where Element == Self {
 	
 	/// Returns a pre-order flattening collection over the collection.
 	///

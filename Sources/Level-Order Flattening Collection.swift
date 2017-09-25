@@ -1,7 +1,7 @@
 // DepthKit © 2017 Constantino Tsarouhas
 
 /// A bidirectional collection that flattens a recursive bidirectional collection by visiting all subcollections in level-order.
-public struct LevelOrderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where RecursiveCollection.Iterator.Element == RecursiveCollection, RecursiveCollection.Indices : BidirectionalCollection {
+public struct LevelOrderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where RecursiveCollection.Element == RecursiveCollection, RecursiveCollection.Indices : BidirectionalCollection {
 	
 	/// Creates a flattening collection over a collection.
 	///
@@ -66,7 +66,7 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 	/// Accesses the collection at given index path.
 	///
 	/// - Parameter indexPath: The index path. The empty path refers to root.
-	private subscript (indexPath: Index.Path) -> RecursiveCollection {
+	private subscript <IndexPath : Sequence> (indexPath: IndexPath) -> RecursiveCollection where IndexPath.Element == RecursiveCollection.Index {
 		return indexPath.reduce(root) { (subcollection, index) in
 			subcollection[index]
 		}
@@ -77,7 +77,7 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 		guard case .some(indexPath: let indexPathOfCurrent) = index else { return .some(indexPath: lastDeepestIndexPath()) }
 		precondition(!indexPathOfCurrent.isEmpty, "Index out of bounds")
 		
-		if let previousIndexPath = indexPath(before: indexPathOfCurrent) {
+		if let previousIndexPath = equidistantIndexPath(before: indexPathOfCurrent) {
 			return .some(indexPath: previousIndexPath)
 		}
 		
@@ -91,7 +91,7 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 		
 		guard case .some(indexPath: let indexPathOfCurrent) = index else { preconditionFailure("Index out of bounds") }
 		
-		if let nextIndexPath = indexPath(after: indexPathOfCurrent) {
+		if let nextIndexPath = equidistantIndexPath(after: indexPathOfCurrent) {
 			return .some(indexPath: nextIndexPath)
 		}
 		
@@ -102,58 +102,64 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 	
 	/// Returns the previous index path that is at the same depth as a given index path.
 	///
-	/// - Parameter indexPathOfCurrent: The index path whose sibling to determine.
+	/// - Parameter indexPath: The index path whose sibling or cousin to determine.
 	///
 	/// - Returns: The previous index path that is at the same depth as `indexPath`, or `nil` if there is no such index path.
-	private func indexPath(before indexPathOfCurrent: Index.Path) -> Index.Path? {
+	private func equidistantIndexPath<IndexPath : BidirectionalCollection>(before indexPath: IndexPath) -> Index.Path? where IndexPath.Element == RecursiveCollection.Index {
 		
-		guard let (indexPathOfParentSlice, indexOfCurrent) = indexPathOfCurrent.splittingLast() else { return nil }
-		let indexPathOfParent = Array(indexPathOfParentSlice)
+		// Determine index path of parent and index of "self", or fail if we're root.
+		guard let (indexPathOfParentAsSlice, deepestIndex) = indexPath.splittingLast() else { return nil }
+		let indexPathOfParent = Array(indexPathOfParentAsSlice)
 		
+		// Try sibling.
 		let parent = self[indexPathOfParent]
-		if indexOfCurrent > parent.startIndex {
-			let indexOfSibling = parent.index(before: indexOfCurrent)
+		if deepestIndex > parent.startIndex {
+			let indexOfSibling = parent.index(before: deepestIndex)
 			return indexPathOfParent.appending(indexOfSibling)
 		}
 		
-		guard let indexPathOfPreviousParent = indexPath(before: indexPathOfParent) else { return nil }
-		for indexPathOfParent in sequence(first: indexPathOfPreviousParent, next: self.indexPath(before:)) {
+		// Try finding cousin (out of every sibling or cousin of the parent of "self").
+		guard let indexPathOfPreviousParent = equidistantIndexPath(before: indexPathOfParent) else { return nil }
+		for indexPathOfParent in sequence(first: indexPathOfPreviousParent, next: self.equidistantIndexPath(before:)) {
 			let parent = self[indexPathOfParent]	// TODO: Potentially optimise redundant computations
-			if indexOfCurrent > parent.startIndex {
-				let indexOfSibling = parent.index(before: indexOfCurrent)
-				return indexPathOfParent.appending(indexOfSibling)
+			if let deepestIndex = parent.indices.last {
+				return indexPathOfParent.appending(deepestIndex)
 			}
 		}
 		
+		// No cousin found.
 		return nil
 		
 	}
 	
 	/// Returns the next index path that is at the same depth as a given index path.
 	///
-	/// - Parameter indexPathOfCurrent: The index path whose sibling to determine.
+	/// - Parameter indexPath: The index path whose sibling or cousin to determine.
 	///
 	/// - Returns: The next index path that is at the same depth as `indexPath`, or `nil` if there is no such index path.
-	private func indexPath(after indexPathOfCurrent: Index.Path) -> Index.Path? {
+	private func equidistantIndexPath<IndexPath : BidirectionalCollection>(after indexPath: IndexPath) -> Index.Path? where IndexPath.Element == RecursiveCollection.Index {
 		
-		guard let (indexPathOfParentSlice, indexOfCurrent) = indexPathOfCurrent.splittingLast() else { return nil }
-		let indexPathOfParent = Array(indexPathOfParentSlice)
+		// Determine index path of parent and index of "self", or fail if we're root.
+		guard let (indexPathOfParentAsSlice, deepestIndex) = indexPath.splittingLast() else { return nil }
+		let indexPathOfParent = Array(indexPathOfParentAsSlice)
 		
+		// Try sibling.
 		let parent = self[indexPathOfParent]
-		let indexOfSibling = parent.index(after: indexOfCurrent)
+		let indexOfSibling = parent.index(after: deepestIndex)
 		if indexOfSibling < parent.endIndex {
 			return indexPathOfParent.appending(indexOfSibling)
 		}
 		
-		guard let indexPathOfNextParent = indexPath(after: indexPathOfParent) else { return nil }
-		for indexPathOfParent in sequence(first: indexPathOfNextParent, next: self.indexPath(after:)) {
+		// Try finding cousin (out of every sibling or cousin of the parent of "self").
+		guard let indexPathOfNextParent = equidistantIndexPath(after: indexPathOfParent) else { return nil }
+		for indexPathOfParent in sequence(first: indexPathOfNextParent, next: self.equidistantIndexPath(after:)) {
 			let parent = self[indexPathOfParent]	// TODO: Potentially optimise redundant computations
-			let startIndex = parent.startIndex
-			if startIndex < parent.endIndex {
-				return indexPathOfParent.appending(startIndex)
+			if let deepestIndex = parent.indices.first {
+				return indexPathOfParent.appending(deepestIndex)
 			}
 		}
 		
+		// No cousin found.
 		return nil
 		
 	}
@@ -263,17 +269,17 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 
 extension LevelOrderFlatteningBidirectionalCollection.Index : Comparable {
 	
-	public static func <<C>(leftIndex: LevelOrderFlatteningBidirectionalCollection<C>.Index, rightIndex: LevelOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
+	public static func <<C>(earlierIndex: LevelOrderFlatteningBidirectionalCollection<C>.Index, laterIndex: LevelOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
 		
-		switch (leftIndex, rightIndex) {
+		switch (earlierIndex, laterIndex) {
 			
-			case (.some(indexPath: let leftPath), .some(indexPath: let rightPath)):
-			if leftPath.count < rightPath.count {
+			case (.some(indexPath: let earlierPath), .some(indexPath: let laterPath)):
+			if earlierPath.count < laterPath.count {
 				return true
-			} else if leftPath.count > rightPath.count {
+			} else if earlierPath.count > laterPath.count {
 				return false
 			} else {
-				return leftPath.lexicographicallyPrecedes(rightPath)
+				return earlierPath.lexicographicallyPrecedes(laterPath)
 			}
 			
 			case (.some, .end):
@@ -296,7 +302,7 @@ extension LevelOrderFlatteningBidirectionalCollection.Index : Comparable {
 	
 }
 
-extension BidirectionalCollection where Iterator.Element == Self, Indices : BidirectionalCollection {
+extension BidirectionalCollection where Element == Self, Indices : BidirectionalCollection {
 	
 	/// Returns a level-order flattening collection over the collection.
 	///

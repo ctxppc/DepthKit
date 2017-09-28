@@ -1,33 +1,5 @@
 // DepthKit © 2017 Constantino Tsarouhas
 
-import Foundation
-
-/// A value that represents an unimplemented code path.
-///
-/// Use of this value silences the compiler's definite initialisation analyser and causes a fatal error at runtime. For example, this does not produce a build-time error:
-///
-///		func doingSomething() -> Something {
-///			unimplemented
-///		}
-public var unimplemented: Never {
-	fatalError("Unimplemented code path assertion failure")
-}
-
-/// A value that represents an impossible code path that cannot be statically handled by the compiler.
-///
-/// Use of this value silences the compiler's definite initialisation analyser and causes a fatal error at runtime. For example, this does not produce a build-time error:
-///
-///		func doingSomething(with value: Value) -> Something {
-///			switch value {
-///				case something:			return …
-///				case somethingElse:		return …
-///				default:				impossible
-///			}
-///		}
-public var impossible: Never {
-	fatalError("Impossible code path assertion failure")
-}
-
 /// Returns a mutated copy of some value.
 ///
 /// - Warning: This function is meant for use with non-object values; it mutates objects in-place.

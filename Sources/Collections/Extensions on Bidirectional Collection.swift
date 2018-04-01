@@ -7,7 +7,7 @@ extension BidirectionalCollection where Element : Equatable {
 	/// - Parameter suffix: The elements.
 	///
 	/// - Returns: `true` if the last elements in `self` are `suffix`, otherwise `false`.
-	public func ends<Suffix : BidirectionalCollection>(with suffix: Suffix) -> Bool where Suffix.Element == Element, Suffix.IndexDistance == IndexDistance {
+	public func ends<Suffix : BidirectionalCollection>(with suffix: Suffix) -> Bool where Suffix.Element == Element {
 		
 		guard self.count >= suffix.count else { return false }
 		

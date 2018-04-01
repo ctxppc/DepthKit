@@ -24,5 +24,3 @@ public protocol OrderedCollection : Collection {
 }
 
 extension DefaultIndices : OrderedCollection {}
-extension DefaultRandomAccessIndices : OrderedCollection {}
-extension DefaultBidirectionalIndices : OrderedCollection {}

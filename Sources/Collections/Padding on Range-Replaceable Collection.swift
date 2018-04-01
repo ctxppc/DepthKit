@@ -13,7 +13,7 @@ extension RangeReplaceableCollection {
 	/// - Parameter index: The index in `self` in which to insert padding.
 	/// - Parameter padding: The element to insert repeatedly at `index`.
 	/// - Parameter targetCount: The length of the collection after padding.
-	public mutating func pad(at index: Index, with padding: Element, toCount targetCount: IndexDistance) {
+	public mutating func pad(at index: Index, with padding: Element, toCount targetCount: Int) {
 		while targetCount > count {
 			insert(padding, at: index)	// FIXME: index may become invalid after the first insertion
 		}
@@ -32,7 +32,7 @@ extension RangeReplaceableCollection {
 	/// - Parameter targetCount: The length of the collection after padding.
 	///
 	/// - Returns: A copy of `self` with zero or more insertions of `padding`.
-	public func padded(at index: Index, with padding: Element, toCount targetCount: IndexDistance) -> Self {
+	public func padded(at index: Index, with padding: Element, toCount targetCount: Int) -> Self {
 		var collection = self
 		collection.pad(at: index, with: padding, toCount: targetCount)
 		return collection
@@ -50,7 +50,7 @@ extension RangeReplaceableCollection {
 	/// - Parameter index: The index in `self` in which to insert padding.
 	/// - Parameter padding: The elements to insert repeatedly at `index`.
 	/// - Parameter targetCount: The length of the collection after padding.
-	public mutating func pad<C : Collection>(at index: Index, withContentsOf padding: C, toCount targetCount: IndexDistance) where C.Element == Element {
+	public mutating func pad<C : Collection>(at index: Index, withContentsOf padding: C, toCount targetCount: Int) where C.Element == Element {
 		precondition(!padding.isEmpty, "Empty padding")
 		while targetCount > count {
 			insert(contentsOf: padding, at: index)	// FIXME: index may become invalid after the first insertion
@@ -71,7 +71,7 @@ extension RangeReplaceableCollection {
 	/// - Parameter targetCount: The length of the collection after padding.
 	///
 	/// - Returns: A copy of `self` with zero or more insertions of `padding`.
-	public func padded<C : Collection>(at index: Index, withContentsOf padding: C, toCount targetCount: IndexDistance) -> Self where C.Element == Element {
+	public func padded<C : Collection>(at index: Index, withContentsOf padding: C, toCount targetCount: Int) -> Self where C.Element == Element {
 		var collection = self
 		collection.pad(at: index, withContentsOf: padding, toCount: targetCount)
 		return collection
@@ -92,7 +92,7 @@ extension Array {
 	/// - Parameter index: The index in `self` in which to insert padding.
 	/// - Parameter padding: The element to insert repeatedly at `index`.
 	/// - Parameter targetCount: The length of the array after padding.
-	public mutating func pad(at index: Index, with padding: Element, toCount targetCount: IndexDistance) {
+	public mutating func pad(at index: Index, with padding: Element, toCount targetCount: Int) {
 		
 		let insertionCount = targetCount - count
 		guard insertionCount > 0 else { return }
@@ -114,7 +114,7 @@ extension Array {
 	/// - Parameter targetCount: The length of the array after padding.
 	///
 	/// - Returns: A copy of `self` with zero or more insertions of `padding`.
-	public func padded(at index: Index, with padding: Element, toCount targetCount: IndexDistance) -> Array {
+	public func padded(at index: Index, with padding: Element, toCount targetCount: Int) -> Array {
 		var array = self
 		array.pad(at: index, with: padding, toCount: targetCount)
 		return array
@@ -132,7 +132,7 @@ extension Array {
 	/// - Parameter index: The index in `self` in which to insert padding.
 	/// - Parameter padding: The elements to insert repeatedly at `index`.
 	/// - Parameter targetCount: The length of the array after padding.
-	public mutating func pad<C : Collection>(at index: Index, withContentsOf padding: C, toCount targetCount: IndexDistance) where C.Element == Element {
+	public mutating func pad<C : Collection>(at index: Index, withContentsOf padding: C, toCount targetCount: Int) where C.Element == Element {
 		
 		precondition(!padding.isEmpty, "Empty padding")
 		
@@ -160,7 +160,7 @@ extension Array {
 	/// - Parameter targetCount: The length of the array after padding.
 	///
 	/// - Returns: A copy of `self` with zero or more insertions of `padding`.
-	public func padded<C : Collection>(at index: Index, withContentsOf padding: C, toCount targetCount: IndexDistance) -> Array where C.Element == Element {
+	public func padded<C : Collection>(at index: Index, withContentsOf padding: C, toCount targetCount: Int) -> Array where C.Element == Element {
 		var array = self
 		array.pad(at: index, withContentsOf: padding, toCount: targetCount)
 		return array

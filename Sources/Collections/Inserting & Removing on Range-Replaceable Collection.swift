@@ -8,7 +8,9 @@ extension RangeReplaceableCollection {
 	///
 	/// - Returns: A copy of the collection with the contents of `other` appended to it.
 	public func appending(_ element: Element) -> Self {
-		return withCopy(of: self, mutator: Self.append, argument: element)
+		var collection = self
+		collection.append(element)
+		return collection
 	}
 	
 	/// Returns a copy of the collection with the contents of a given sequence appended to it.
@@ -17,7 +19,9 @@ extension RangeReplaceableCollection {
 	///
 	/// - Returns: A copy of the collection with the contents of `other` appended to it.
 	public func appending<S : Sequence>(contentsOf other: S) -> Self where S.Element == Element {
-		return withCopy(of: self, mutator: Self.append, argument: other)
+		var collection = self
+		collection.append(contentsOf: other)
+		return collection
 	}
 	
 	/// Returns a copy of the collection after inserting an element at a given index.
@@ -27,9 +31,9 @@ extension RangeReplaceableCollection {
 	///
 	/// - Returns: A copy of `self` after inserting `insertedElement` at `index`.
 	public func inserting(_ insertedElement: Element, at index: Index) -> Self {
-		return withCopy(of: self) { (collection: inout Self) in
-			collection.insert(insertedElement, at: index)
-		}
+		var collection = self
+		collection.insert(insertedElement, at: index)
+		return collection
 	}
 	
 	/// Returns a copy of the collection after removing an element at a given index.
@@ -38,9 +42,9 @@ extension RangeReplaceableCollection {
 	///
 	/// - Returns: A copy of `self` after removing the element at `index`.
 	public func removing(at index: Index) -> Self {
-		return withCopy(of: self) { (collection: inout Self) in
-			collection.remove(at: index)
-		}
+		var collection = self
+		collection.remove(at: index)
+		return collection
 	}
 	
 }

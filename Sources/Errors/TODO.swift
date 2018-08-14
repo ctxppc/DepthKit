@@ -9,7 +9,7 @@ public enum TODO {
 	
 	/// Asserts that a function (or part thereof) is unimplemented.
 	///
-	/// Use of this value silences the compiler's definite initialisation analyser and causes a fatal error at runtime. For example, this does not produce a build-time error:
+	/// Use of this value silences the compiler's definite initialisation analyser and causes a fatal error at runtime instead. For example, this does not produce a build-time error:
 	///
 	///		func doingSomething() -> Something {
 	///			TODO.unimplemented

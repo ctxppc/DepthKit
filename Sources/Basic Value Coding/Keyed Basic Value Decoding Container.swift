@@ -191,8 +191,6 @@ internal func number<Number : BinaryFloatingPoint>(from value: Any, codingPath: 
 	let result: Number?
 	switch value {
 		case let i as Float:	result = Number(exactly: i)
-		case let i as Float64:	result = Number(exactly: i)
-		case let i as Float80:	result = Number(exactly: i)
 		case let i as Double:	result = Number(exactly: i)
 		case let other:			throw DecodingError.typeMismatch(Number.self, .init(codingPath: codingPath, debugDescription: "Could not decode \(other) of type \(type(of: other)) as \(Number.self)"))
 	}

@@ -7,7 +7,7 @@ public final class BasicValueDecoder : Decoder {
 		self.value = value
 		codingPath = []
 		userInfo = [:]
-		codingKeyStringValueFromDictionaryKey = { $0 }
+		convertedKeyValue = { $0 }
 	}
 	
 	/// Creates a decoder with given decoded value and coding path.
@@ -15,7 +15,7 @@ public final class BasicValueDecoder : Decoder {
 		self.value = value
 		codingPath = decoder.codingPath + [key]
 		userInfo = decoder.userInfo
-		codingKeyStringValueFromDictionaryKey = decoder.codingKeyStringValueFromDictionaryKey
+		convertedKeyValue = decoder.convertedKeyValue
 	}
 	
 	/// The encoded value being decoded by `self`.
@@ -28,7 +28,7 @@ public final class BasicValueDecoder : Decoder {
 	public var userInfo: [CodingUserInfoKey : Any]
 	
 	/// A function that maps a key from a dictionary to the string value of a coding key.
-	public var codingKeyStringValueFromDictionaryKey: (String) -> String
+	public var convertedKeyValue: (String) -> String
 	
 	// See protocol.
 	public func container<Key : CodingKey>(keyedBy keyType: Key.Type) throws -> KeyedDecodingContainer<Key> {

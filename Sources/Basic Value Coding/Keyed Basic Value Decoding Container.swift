@@ -9,7 +9,7 @@ public struct KeyedBasicValueDecodingContainer<Key : CodingKey> : KeyedDecodingC
 		self.dictionary = dictionary
 		self.codingPath = codingPath
 		
-		allKeys = dictionary.keys.compactMap(Key.init)
+		allKeys = dictionary.keys.map(decoder.convertedKeyValue).compactMap(Key.init)
 		
 	}
 	
@@ -27,7 +27,7 @@ public struct KeyedBasicValueDecodingContainer<Key : CodingKey> : KeyedDecodingC
 	
 	// See protocol.
 	public func contains(_ key: Key) -> Bool {
-		return dictionary.keys.contains(key.stringValue)
+		return dictionary.keys.contains(decoder.convertedKeyValue(key.stringValue))
 	}
 	
 	// See protocol.
@@ -142,7 +142,7 @@ public struct KeyedBasicValueDecodingContainer<Key : CodingKey> : KeyedDecodingC
 	}
 	
 	private func rawValue(forKey key: CodingKey) throws -> Any {
-		guard let value = dictionary[key.stringValue] else { throw DecodingError.keyNotFound(key, .init(codingPath: codingPath, debugDescription: "Key not found")) }
+		guard let value = dictionary[decoder.convertedKeyValue(key.stringValue)] else { throw DecodingError.keyNotFound(key, .init(codingPath: codingPath, debugDescription: "Key not found")) }
 		return value
 	}
 	

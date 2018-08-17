@@ -5,24 +5,6 @@ import XCTest
 
 class BasicValueCoderTestCase : XCTestCase {
 	
-	let basicDictionary: [String : Any] = [
-		"att1" : "value",
-		"att2" : 1,
-		"att3" : ["sub1" : 1, "sub2" : [1, 2, 3], "sub3" : ["a", "b", "c"]],
-		"att4" : Int?.none as Any,
-		"att5" : "",
-		"ignd" : "a"
-	]
-	
-	let mappedDictionary: [String : Any] = [
-		"key.att1" : "value",
-		"key.att2" : 1,
-		"key.att3" : ["key.sub1" : 1, "key.sub2" : [1, 2, 3], "key.sub3" : ["a", "b", "c"]],
-		"key.att4" : Int?.none as Any,
-		"key.att5" : "",
-		"key.ignd" : "a"
-	]
-	
 	let basicValue = Value(
 		att1: "value",
 		att2: 1,
@@ -56,19 +38,74 @@ class BasicValueCoderTestCase : XCTestCase {
 	}
 	
 	func testBasic() throws {
-		let decodedValue = try BasicValueDecoder(value: basicDictionary).decode(Value.self)
+		
+		let dictionary: [String : Any] = [
+			"att1" : "value",
+			"att2" : 1,
+			"att3" : ["sub1" : 1, "sub2" : [1, 2, 3], "sub3" : ["a", "b", "c"]],
+			"att4" : Int?.none as Any,
+			"att5" : "",
+			"ignd" : "a"
+		]
+		
+		let decodedValue = try BasicValueDecoder(value: dictionary).decode(Value.self)
 		XCTAssertEqual(decodedValue, basicValue)
 		XCTAssertNotEqual(decodedValue, differingValue)
+		
 	}
 	
 	func testMapped() throws {
 		
-		let decoder = BasicValueDecoder(value: mappedDictionary)
+		let dictionary: [String : Any] = [
+			"key.att1" : "value",
+			"key.att2" : 1,
+			"key.att3" : ["key.sub1" : 1, "key.sub2" : [1, 2, 3], "key.sub3" : ["a", "b", "c"]],
+			"key.att4" : Int?.none as Any,
+			"key.att5" : "",
+			"key.ignd" : "a"
+		]
+		
+		let decoder = BasicValueDecoder(value: dictionary)
 		decoder.convertedKeyValue = { "key.\($0)" }
 		
 		let decodedValue = try decoder.decode(Value.self)
 		XCTAssertEqual(decodedValue, basicValue)
 		XCTAssertNotEqual(decodedValue, differingValue)
+		
+	}
+	
+	func testConversions() throws {
+		
+		let dictionary: [String : Any] = [
+			"att1" : "value",
+			"att2" : 1 as UInt,
+			"att3" : ["sub1" : 1 as Int64, "sub2" : [1, 2, 3], "sub3" : ["a", "b", "c"]],
+			"att4" : Int16?.none as Any,
+			"att5" : "",
+			"ignd" : "a"
+		]
+		
+		let decodedValue = try BasicValueDecoder(value: dictionary).decode(Value.self)
+		XCTAssertEqual(decodedValue, basicValue)
+		XCTAssertNotEqual(decodedValue, differingValue)
+		
+	}
+	
+	func testOverflow() throws {
+		
+		let dictionary: [String : Any] = [
+			"att1" : "value",
+			"att2" : UInt.max,
+			"att3" : ["sub1" : 1 as Int64, "sub2" : [1, 2, 3], "sub3" : ["a", "b", "c"]],
+			"att4" : Int16?.none as Any,
+			"att5" : "",
+			"ignd" : "a"
+		]
+		
+		XCTAssertThrowsError(try BasicValueDecoder(value: dictionary).decode(Value.self), "Overflow not detected") { error in
+			guard case DecodingError.typeMismatch(let type, _) = error else { return XCTFail("Wrong error thrown") }
+			XCTAssertEqual(ObjectIdentifier(type), ObjectIdentifier(Int.self), "Wrong expected type")
+		}
 		
 	}
 	

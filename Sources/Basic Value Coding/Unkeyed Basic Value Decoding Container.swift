@@ -111,6 +111,20 @@ public struct UnkeyedBasicValueDecodingContainer : UnkeyedDecodingContainer {
 		return try decode()
 	}
 	
+	private mutating func decode<Integer : BinaryInteger & Decodable>() throws -> Integer {
+		let rawValue = try peek(expectedType: Integer.self)
+		let decodedValue: Integer = try integer(from: rawValue, codingPath: codingPath.appending(BasicValueCodingKey(index: currentIndex)))
+		currentIndex += 1
+		return decodedValue
+	}
+	
+	private mutating func decode<Number : BinaryFloatingPoint & Decodable>() throws -> Number {
+		let rawValue = try peek(expectedType: Number.self)
+		let decodedValue: Number = try number(from: rawValue, codingPath: codingPath.appending(BasicValueCodingKey(index: currentIndex)))
+		currentIndex += 1
+		return decodedValue
+	}
+	
 	// See protocol.
 	public mutating func decode<T>(_ type: T.Type) throws -> T where T : Decodable {
 		return try decode()
@@ -154,7 +168,7 @@ public struct UnkeyedBasicValueDecodingContainer : UnkeyedDecodingContainer {
 	///
 	/// - Returns: The next value.
 	private func peek<T>(expectedType: T.Type) throws -> Any {
-		guard !isAtEnd else { throw DecodingError.valueNotFound(expectedType, .init(codingPath: codingPath + [BasicValueCodingKey(index: currentIndex)], debugDescription: "No more values to decode in this container")) }
+		guard !isAtEnd else { throw DecodingError.valueNotFound(expectedType, .init(codingPath: codingPath.appending(BasicValueCodingKey(index: currentIndex)), debugDescription: "No more values to decode in this container")) }
 		return array[currentIndex]
 	}
 	

@@ -107,6 +107,14 @@ public struct KeyedBasicValueDecodingContainer<Key : CodingKey> : KeyedDecodingC
 		return try decode(key: key)
 	}
 	
+	private func decode<Integer : BinaryInteger & Decodable>(key: Key) throws -> Integer {
+		return try integer(from: rawValue(forKey: key), codingPath: codingPath.appending(key))
+	}
+	
+	private func decode<Number : BinaryFloatingPoint & Decodable>(key: Key) throws -> Number {
+		return try number(from: rawValue(forKey: key), codingPath: codingPath.appending(key))
+	}
+	
 	// See protocol.
 	public func decode<T : Decodable>(_ type: T.Type, forKey key: Key) throws -> T {
 		return try decode(key: key)
@@ -154,4 +162,42 @@ internal protocol OptionalProtocol {
 
 extension Optional : OptionalProtocol {
 	var isNil: Bool { return self == nil }
+}
+
+internal func integer<Integer : BinaryInteger>(from value: Any, codingPath: [CodingKey]) throws -> Integer {
+	
+	let result: Integer?
+	switch value {
+		case let i as Int:		result = Integer(exactly: i)
+		case let i as Int8:		result = Integer(exactly: i)
+		case let i as Int16:	result = Integer(exactly: i)
+		case let i as Int32:	result = Integer(exactly: i)
+		case let i as Int64:	result = Integer(exactly: i)
+		case let i as UInt:		result = Integer(exactly: i)
+		case let i as UInt8:	result = Integer(exactly: i)
+		case let i as UInt16:	result = Integer(exactly: i)
+		case let i as UInt32:	result = Integer(exactly: i)
+		case let i as UInt64:	result = Integer(exactly: i)
+		case let other:			throw DecodingError.typeMismatch(Integer.self, .init(codingPath: codingPath, debugDescription: "Could not decode \(other) of type \(type(of: other)) as \(Integer.self)"))
+	}
+	
+	guard let integer = result else { throw DecodingError.typeMismatch(Integer.self, .init(codingPath: codingPath, debugDescription: "Could not convert \(value) of type \(type(of: value)) to \(Integer.self)")) }
+	return integer
+	
+}
+
+internal func number<Number : BinaryFloatingPoint>(from value: Any, codingPath: [CodingKey]) throws -> Number {
+	
+	let result: Number?
+	switch value {
+		case let i as Float:	result = Number(exactly: i)
+		case let i as Float64:	result = Number(exactly: i)
+		case let i as Float80:	result = Number(exactly: i)
+		case let i as Double:	result = Number(exactly: i)
+		case let other:			throw DecodingError.typeMismatch(Number.self, .init(codingPath: codingPath, debugDescription: "Could not decode \(other) of type \(type(of: other)) as \(Number.self)"))
+	}
+	
+	guard let number = result else { throw DecodingError.typeMismatch(Number.self, .init(codingPath: codingPath, debugDescription: "Could not convert \(value) of type \(type(of: value)) to \(Number.self)")) }
+	return number
+	
 }

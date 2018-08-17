@@ -90,6 +90,14 @@ public struct SingleBasicValueDecodingContainer : SingleValueDecodingContainer {
 		return try decode()
 	}
 	
+	private func decode<Integer : BinaryInteger & Decodable>() throws -> Integer {
+		return try integer(from: value, codingPath: codingPath)
+	}
+	
+	private func decode<Number : BinaryFloatingPoint & Decodable>() throws -> Number {
+		return try number(from: value, codingPath: codingPath)
+	}
+	
 	// See protocol.
 	public func decode<T : Decodable>(_ type: T.Type) throws -> T {
 		return try decode()

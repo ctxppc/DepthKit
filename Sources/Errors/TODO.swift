@@ -1,4 +1,4 @@
-// DepthKit © 2017 Constantino Tsarouhas
+// DepthKit © 2017–2018 Constantino Tsarouhas
 
 /// A bottom type that represents a missing type.
 ///

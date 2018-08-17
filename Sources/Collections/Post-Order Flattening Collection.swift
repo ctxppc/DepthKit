@@ -1,4 +1,4 @@
-// DepthKit © 2017 Constantino Tsarouhas
+// DepthKit © 2017–2018 Constantino Tsarouhas
 
 /// A bidirectional collection that flattens a recursive bidirectional collection by visiting all subcollections in post-order.
 public struct PostOrderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where RecursiveCollection.Element == RecursiveCollection {

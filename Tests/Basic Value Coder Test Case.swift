@@ -1,4 +1,4 @@
-// DepthKit © 2017–18 Constantino Tsarouhas
+// DepthKit © 2017–2018 Constantino Tsarouhas
 
 import XCTest
 @testable import DepthKit

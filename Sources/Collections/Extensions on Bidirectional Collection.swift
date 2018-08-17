@@ -1,4 +1,4 @@
-// DepthKit © 2017 Constantino Tsarouhas
+// DepthKit © 2017–2018 Constantino Tsarouhas
 
 extension BidirectionalCollection where Element : Equatable {
 	

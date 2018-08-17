@@ -1,4 +1,4 @@
-// DepthKit © 2017 Constantino Tsarouhas
+// DepthKit © 2017–2018 Constantino Tsarouhas
 
 internal struct Tree<Value> {
 	

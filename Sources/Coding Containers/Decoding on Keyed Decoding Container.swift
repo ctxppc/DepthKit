@@ -9,7 +9,7 @@ extension KeyedDecodingContainer {
 	/// - Throws: Any errors thrown while decoding the value.
 	///
 	/// - Returns: The decoded value.
-	func decode<T : Decodable>(key: Key) throws -> T {
+	public func decode<T : Decodable>(key: Key) throws -> T {
 		return try decode(T.self, forKey: key)
 	}
 	
@@ -20,7 +20,7 @@ extension KeyedDecodingContainer {
 	/// - Throws: Any errors thrown while decoding the value.
 	///
 	/// - Returns: The decoded value, or `nil` if the value is `nil` or if there are no more elements to be decoded.
-	func decodeIfPresent<T : Decodable>(key: Key) throws -> T? {
+	public func decodeIfPresent<T : Decodable>(key: Key) throws -> T? {
 		return try decodeIfPresent(T.self, forKey: key)
 	}
 	

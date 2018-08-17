@@ -1,6 +1,6 @@
 // DepthKit © 2017–2018 Constantino Tsarouhas
 
-internal struct Tree<Value> {
+struct Tree<Value> {
 	
 	/// Creates a tree.
 	init(_ value: Value, _ children: [Tree]) {

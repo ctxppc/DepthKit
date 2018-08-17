@@ -59,11 +59,6 @@ class BasicValueCoderTestCase : XCTestCase {
 		let decodedValue = try BasicValueDecoder(value: basicDictionary).decode(Value.self)
 		XCTAssertEqual(decodedValue, basicValue)
 		XCTAssertNotEqual(decodedValue, differingValue)
-		
-		Value(att1: "value", att2: 1, att3: DepthKit_Tests.BasicValueCoderTestCase.Value.S(sub1: 1, sub2: [1, 2, 3], sub3: ["a", "b", "c"]), att4: nil, att5: nil)
-		Value(att1: "value", att2: 1, att3: DepthKit_Tests.BasicValueCoderTestCase.Value.S(sub1: 1, sub2: [1, 2, 3], sub3: ["a", "b", "c"]), att4: nil, att5: Optional(""))
-		
-		
 	}
 	
 	func testMapped() throws {

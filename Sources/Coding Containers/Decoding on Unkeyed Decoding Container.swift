@@ -7,7 +7,7 @@ extension UnkeyedDecodingContainer {
 	/// - Throws: Any errors thrown while decoding the value.
 	///
 	/// - Returns: The decoded value.
-	mutating func decode<T : Decodable>() throws -> T {
+	public mutating func decode<T : Decodable>() throws -> T {
 		return try decode(T.self)
 	}
 	
@@ -16,7 +16,7 @@ extension UnkeyedDecodingContainer {
 	/// - Throws: Any errors thrown while decoding the value.
 	///
 	/// - Returns: The decoded value, or `nil` if the value is `nil` or if the container does not have a value associated with `key`.
-	mutating func decodeIfPresent<T : Decodable>() throws -> T? {
+	public mutating func decodeIfPresent<T : Decodable>() throws -> T? {
 		return try decodeIfPresent(T.self)
 	}
 	

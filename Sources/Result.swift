@@ -12,7 +12,7 @@ public enum Result<Value> {
 	/// This initialiser bridges functions using the Swift error throwing machinery to result values.
 	///
 	/// - Parameter function: A throwing function.
-	init(from function: () throws -> Value) {
+	public init(from function: () throws -> Value) {
 		do {
 			self = .value(try function())
 		} catch {
@@ -37,7 +37,7 @@ public enum Result<Value> {
 	/// - Returns: The value.
 	///
 	/// - Throws: The error in `self` if `self` represents an unsuccessful completion of an operation.
-	func value() throws -> Value {
+	public func value() throws -> Value {
 		switch self {
 			case .value(let value):	return value
 			case .error(let error):	throw error

@@ -1,4 +1,4 @@
-// DepthKit © 2017–2018 Constantino Tsarouhas
+// DepthKit © 2017–2019 Constantino Tsarouhas
 
 /// A value that indicates whether an operation has succeeded or failed.
 ///

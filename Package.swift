@@ -1,5 +1,5 @@
 // swift-tools-version:4.0
-// DepthKit © 2017–2018 Constantino Tsarouhas
+// DepthKit © 2017–2019 Constantino Tsarouhas
 
 import PackageDescription
 

@@ -1,4 +1,4 @@
-// DepthKit © 2017–2018 Constantino Tsarouhas
+// DepthKit © 2017–2019 Constantino Tsarouhas
 
 extension Collection {
 	

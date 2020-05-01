@@ -1,4 +1,4 @@
-// DepthKit © 2017–2019 Constantino Tsarouhas
+// DepthKit © 2017–2020 Constantino Tsarouhas
 
 import XCTest
 @testable import DepthKit
@@ -112,19 +112,19 @@ class CollectionPaddingTestCase : XCTestCase {
 		
 		let original = "My unit tests pass! 😂"		// 21 characters
 		
-		let unpadded = original.padded(at: original.index(of: "u")!, withContentsOf: "uu", toCount: 21)
+		let unpadded = original.padded(at: original.firstIndex(of: "u")!, withContentsOf: "uu", toCount: 21)
 		XCTAssert(unpadded == original)
 		
-		let evenPadded = original.padded(at: original.index(of: "u")!, withContentsOf: "uu", toCount: 25)
+		let evenPadded = original.padded(at: original.firstIndex(of: "u")!, withContentsOf: "uu", toCount: 25)
 		XCTAssert(evenPadded == "My uuuuunit tests pass! 😂")
 		
-		let unevenPadded = original.padded(at: original.index(of: "u")!, withContentsOf: "uu", toCount: 22)
+		let unevenPadded = original.padded(at: original.firstIndex(of: "u")!, withContentsOf: "uu", toCount: 22)
 		XCTAssert(unevenPadded == "My uuunit tests pass! 😂")
 		
-		let singleUnpadded = original.padded(at: original.index(of: "u")!, with: "u", toCount: 21)
+		let singleUnpadded = original.padded(at: original.firstIndex(of: "u")!, with: "u", toCount: 21)
 		XCTAssert(singleUnpadded == original)
 		
-		let singlePadded = original.padded(at: original.index(of: "u")!, with: "u", toCount: 25)
+		let singlePadded = original.padded(at: original.firstIndex(of: "u")!, with: "u", toCount: 25)
 		XCTAssert(singlePadded == "My uuuuunit tests pass! 😂")
 		
 	}

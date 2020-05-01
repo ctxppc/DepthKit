@@ -1,5 +1,5 @@
-// swift-tools-version:4.0
-// DepthKit © 2017–2019 Constantino Tsarouhas
+// swift-tools-version:5.2
+// DepthKit © 2017–2020 Constantino Tsarouhas
 
 import PackageDescription
 
@@ -10,7 +10,7 @@ let package = Package(
 	],
 	targets: [
 		.target(name: "DepthKit", path: "Sources"),
-		.testTarget(name: "DepthKit Tests", dependencies: ["DepthKit"], path: "Tests")
+		.testTarget(name: "DepthKitTests", dependencies: ["DepthKit"], path: "Tests")
 	],
-	swiftLanguageVersions: [4, 5]
+	swiftLanguageVersions: [.v4, .v5]
 )

@@ -1,4 +1,4 @@
-// DepthKit © 2017–2019 Constantino Tsarouhas
+// DepthKit © 2017–2020 Constantino Tsarouhas
 
 public struct KeyedBasicValueDecodingContainer<Key : CodingKey> : KeyedDecodingContainerProtocol {
 	

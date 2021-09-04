@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 extension Collection {
 	
@@ -12,15 +12,11 @@ extension Collection {
 		return (head: head, tail: suffix(from: index(after: startIndex)))
 	}
 	
-}
-
-extension Collection where SubSequence : Collection {
-	
 	/// Returns a sequence over every element and the subsequence of elements following that element.
 	///
 	/// - Returns: A sequence of every element `head` in `self` and the subsequence `tail` of elements that follow `head` in `self`.
 	public func unfoldingForward() -> UnfoldSequence<(Element, SubSequence), SubSequence> {
-		return sequence(state: suffix(from: startIndex)) { (subsequence: inout SubSequence) in
+		sequence(state: suffix(from: startIndex)) { (subsequence: inout SubSequence) in
 			guard let (head, tail) = subsequence.splittingFirst() else { return nil }
 			subsequence = tail
 			return (head, tail)

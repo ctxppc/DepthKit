@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 /// A bidirectional collection that flattens a recursive bidirectional collection by visiting all subcollections in pre-order.
 public struct PreOrderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where RecursiveCollection.Element == RecursiveCollection {
@@ -51,11 +51,11 @@ extension PreOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 	}
 	
 	public var startIndex: Index {
-		return .some(indexPath: [])
+		.some(indexPath: [])
 	}
 	
 	public var endIndex: Index {
-		return .end
+		.end
 	}
 	
 	public subscript (index: Index) -> RecursiveCollection {
@@ -151,16 +151,16 @@ extension PreOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 
 extension PreOrderFlatteningBidirectionalCollection.Index : Comparable {
 	
-	public static func <<C>(leftIndex: PreOrderFlatteningBidirectionalCollection<C>.Index, rightIndex: PreOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
-		switch (leftIndex, rightIndex) {
+	public static func < (earlier: Self, later: Self) -> Bool {
+		switch (earlier, later) {
 			case (.some(indexPath: let leftPath), .some(indexPath: let rightPath)):	return leftPath.lexicographicallyPrecedes(rightPath)
 			case (.some, .end):														return true
 			default:																return false
 		}
 	}
 	
-	public static func ==<C>(index: PreOrderFlatteningBidirectionalCollection<C>.Index, otherIndex: PreOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
-		switch (index, otherIndex) {
+	public static func == (first: Self, other: Self) -> Bool {
+		switch (first, other) {
 			case (.some(indexPath: let path), .some(indexPath: let otherPath)):	return path == otherPath
 			case (.end, .end):													return true
 			default:															return false

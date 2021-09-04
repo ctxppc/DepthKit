@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 /// A bidirectional collection that flattens a recursive bidirectional collection by visiting all subcollections in post-order.
 public struct PostOrderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where RecursiveCollection.Element == RecursiveCollection {
@@ -51,11 +51,11 @@ extension PostOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 	}
 	
 	public var startIndex: Index {
-		return .some(indexPath: indexPathForLeadingCollection(containedInCollectionAt: []))
+		.some(indexPath: indexPathForLeadingCollection(containedInCollectionAt: []))
 	}
 	
 	public var endIndex: Index {
-		return .end
+		.end
 	}
 	
 	public subscript (index: Index) -> RecursiveCollection {
@@ -67,7 +67,7 @@ extension PostOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 	///
 	/// - Parameter indexPath: The index path. The empty path refers to root.
 	private subscript <IndexPath : Sequence>(indexPath: IndexPath) -> RecursiveCollection where IndexPath.Element == RecursiveCollection.Index {
-		return indexPath.reduce(root) { (subcollection, index) in
+		indexPath.reduce(root) { (subcollection, index) in
 			subcollection[index]
 		}
 	}
@@ -146,17 +146,23 @@ extension PostOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 
 extension PostOrderFlatteningBidirectionalCollection.Index : Comparable {
 	
-	public static func <<C>(leftIndex: PostOrderFlatteningBidirectionalCollection<C>.Index, rightIndex: PostOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
-		switch (leftIndex, rightIndex) {
-			case (.some(indexPath: let leftPath), .some(indexPath: let rightPath)):	return leftPath.lexicographicallyPrecedes(rightPath, orderingShorterSequencesAfter: ())
-			case (.some, .end):														return true
-			default:																return false
+	public static func < (earlier: Self, later: Self) -> Bool {
+		switch (earlier, later) {
+			
+			case (.some(indexPath: let earlier), .some(indexPath: let later)):
+			return earlier.lexicographicallyPrecedes(later, orderingShorterSequencesAfter: ())
+			
+			case (.some, .end):
+			return true
+			
+			default:
+			return false
 		}
 	}
 	
-	public static func ==<C>(index: PostOrderFlatteningBidirectionalCollection<C>.Index, otherIndex: PostOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
-		switch (index, otherIndex) {
-			case (.some(indexPath: let path), .some(indexPath: let otherPath)):	return path == otherPath
+	public static func == (first: Self, other: Self) -> Bool {
+		switch (first, other) {
+			case (.some(indexPath: let first), .some(indexPath: let other)):	return first == other
 			case (.end, .end):													return true
 			default:															return false
 		}

@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 extension KeyedDecodingContainer {
 	
@@ -10,7 +10,7 @@ extension KeyedDecodingContainer {
 	///
 	/// - Returns: The decoded value.
 	public func decode<T : Decodable>(key: Key) throws -> T {
-		return try decode(T.self, forKey: key)
+		try decode(T.self, forKey: key)
 	}
 	
 	/// Decodes a value for given key, if present.
@@ -21,7 +21,7 @@ extension KeyedDecodingContainer {
 	///
 	/// - Returns: The decoded value, or `nil` if the value is `nil` or if there are no more elements to be decoded.
 	public func decodeIfPresent<T : Decodable>(key: Key) throws -> T? {
-		return try decodeIfPresent(T.self, forKey: key)
+		try decodeIfPresent(T.self, forKey: key)
 	}
 	
 }

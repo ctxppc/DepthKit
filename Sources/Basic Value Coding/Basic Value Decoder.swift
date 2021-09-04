@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 public final class BasicValueDecoder : Decoder {
 	
@@ -44,12 +44,12 @@ public final class BasicValueDecoder : Decoder {
 	
 	// See protocol.
 	public func singleValueContainer() throws -> SingleValueDecodingContainer {
-		return SingleBasicValueDecodingContainer(value: value, codingPath: codingPath)
+		SingleBasicValueDecodingContainer(value: value, codingPath: codingPath)
 	}
 	
 	/// Decodes a value of some type.
 	public func decode<T : Decodable>(_ type: T.Type = T.self) throws -> T {
-		return try T(from: self)
+		try T(from: self)
 	}
 	
 }

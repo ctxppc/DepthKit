@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 extension Comparable {
 	
@@ -8,7 +8,7 @@ extension Comparable {
 	///
 	/// - Returns: `range.lowerBound` if `self` ≤ `range.lowerBound`, `range.upperBound` if `self` ≥ `range.upperBound`, or `self` otherwise.
 	public func capped(to range: ClosedRange<Self>) -> Self {
-		return max(range.lowerBound, min(range.upperBound, self))
+		max(range.lowerBound, min(range.upperBound, self))
 	}
 	
 	/// Returns `self` if `self` is within `range`, otherwise returns the lower bound of `range`.
@@ -17,7 +17,7 @@ extension Comparable {
 	///
 	/// - Returns: `range.lowerBound` if `self` ≤ `range.lowerBound`, otherwise `self`.
 	public func capped(to range: PartialRangeFrom<Self>) -> Self {
-		return max(range.lowerBound, self)
+		max(range.lowerBound, self)
 	}
 	
 	/// Returns `self` if `self` is within `range`, otherwise returns the upper bound of `range`.
@@ -26,7 +26,7 @@ extension Comparable {
 	///
 	/// - Returns: `range.upperBound` if `self` ≥ `range.upperBound`, otherwise `self`.
 	public func capped(to range: PartialRangeThrough<Self>) -> Self {
-		return min(range.upperBound, self)
+		min(range.upperBound, self)
 	}
 	
 }

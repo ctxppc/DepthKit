@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 public struct UnkeyedBasicValueDecodingContainer : UnkeyedDecodingContainer {
 	
@@ -20,12 +20,12 @@ public struct UnkeyedBasicValueDecodingContainer : UnkeyedDecodingContainer {
 	
 	// See protocol.
 	public var count: Int? {
-		return array.count
+		array.count
 	}
 	
 	// See protocol.
 	public var isAtEnd: Bool {
-		return currentIndex >= array.endIndex
+		currentIndex >= array.endIndex
 	}
 	
 	// See protocol.
@@ -43,72 +43,72 @@ public struct UnkeyedBasicValueDecodingContainer : UnkeyedDecodingContainer {
 	
 	// See protocol.
 	public mutating func decode(_ type: Bool.Type) throws -> Bool {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: String.Type) throws -> String {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: Double.Type) throws -> Double {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: Float.Type) throws -> Float {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: Int.Type) throws -> Int {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: Int8.Type) throws -> Int8 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: Int16.Type) throws -> Int16 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: Int32.Type) throws -> Int32 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: Int64.Type) throws -> Int64 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: UInt.Type) throws -> UInt {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: UInt8.Type) throws -> UInt8 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: UInt16.Type) throws -> UInt16 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: UInt32.Type) throws -> UInt32 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public mutating func decode(_ type: UInt64.Type) throws -> UInt64 {
-		return try decode()
+		try decode()
 	}
 	
 	private mutating func decode<Integer : BinaryInteger & Decodable>() throws -> Integer {
@@ -127,7 +127,7 @@ public struct UnkeyedBasicValueDecodingContainer : UnkeyedDecodingContainer {
 	
 	// See protocol.
 	public mutating func decode<T>(_ type: T.Type) throws -> T where T : Decodable {
-		return try decode()
+		try decode()
 	}
 	
 	public mutating func decode<T : Decodable>() throws -> T {

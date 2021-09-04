@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 /// A bidirectional collection that flattens a recursive bidirectional collection by visiting all subcollections in level-order.
 public struct LevelOrderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where RecursiveCollection.Element == RecursiveCollection {
@@ -51,11 +51,11 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 	}
 	
 	public var startIndex: Index {
-		return .some(indexPath: [])
+		.some(indexPath: [])
 	}
 	
 	public var endIndex: Index {
-		return .end
+		.end
 	}
 	
 	public subscript (index: Index) -> RecursiveCollection {
@@ -67,7 +67,7 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 	///
 	/// - Parameter indexPath: The index path. The empty path refers to root.
 	private subscript <IndexPath : Sequence>(indexPath: IndexPath) -> RecursiveCollection where IndexPath.Element == RecursiveCollection.Index {
-		return indexPath.reduce(root) { (subcollection, index) in
+		indexPath.reduce(root) { (subcollection, index) in
 			subcollection[index]
 		}
 	}
@@ -269,17 +269,16 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 
 extension LevelOrderFlatteningBidirectionalCollection.Index : Comparable {
 	
-	public static func <<C>(earlierIndex: LevelOrderFlatteningBidirectionalCollection<C>.Index, laterIndex: LevelOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
-		
-		switch (earlierIndex, laterIndex) {
+	public static func < (earlier: Self, later: Self) -> Bool {
+		switch (earlier, later) {
 			
-			case (.some(indexPath: let earlierPath), .some(indexPath: let laterPath)):
-			if earlierPath.count < laterPath.count {
+			case (.some(indexPath: let earlier), .some(indexPath: let later)):
+			if earlier.count < later.count {
 				return true
-			} else if earlierPath.count > laterPath.count {
+			} else if earlier.count > later.count {
 				return false
 			} else {
-				return earlierPath.lexicographicallyPrecedes(laterPath)
+				return earlier.lexicographicallyPrecedes(later)
 			}
 			
 			case (.some, .end):
@@ -289,11 +288,10 @@ extension LevelOrderFlatteningBidirectionalCollection.Index : Comparable {
 			return false
 			
 		}
-		
 	}
 	
-	public static func ==<C>(index: LevelOrderFlatteningBidirectionalCollection<C>.Index, otherIndex: LevelOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
-		switch (index, otherIndex) {
+	public static func == (first: Self, other: Self) -> Bool {
+		switch (first, other) {
 			case (.some(indexPath: let path), .some(indexPath: let otherPath)):	return path == otherPath
 			case (.end, .end):													return true
 			default:															return false
@@ -302,7 +300,7 @@ extension LevelOrderFlatteningBidirectionalCollection.Index : Comparable {
 	
 }
 
-extension BidirectionalCollection where Element == Self, Indices : BidirectionalCollection {
+extension BidirectionalCollection where Element == Self {
 	
 	/// Returns a level-order flattening collection over the collection.
 	///
@@ -310,7 +308,7 @@ extension BidirectionalCollection where Element == Self, Indices : Bidirectional
 	///
 	/// - Returns: A level-order flattening collection over `self`.
 	public func flattenedInLevelOrder(isLeaf: @escaping (LevelOrderFlatteningBidirectionalCollection<Self>.Index.Path) -> Bool = { _ in false }) -> LevelOrderFlatteningBidirectionalCollection<Self> {
-		return LevelOrderFlatteningBidirectionalCollection(root: self, isLeaf: isLeaf)
+		LevelOrderFlatteningBidirectionalCollection(root: self, isLeaf: isLeaf)
 	}
 	
 	/// Returns a level-order flattening collection over the collection.
@@ -319,7 +317,7 @@ extension BidirectionalCollection where Element == Self, Indices : Bidirectional
 	///
 	/// - Returns: A level-order flattening collection over `self`.
 	public func flattenedInLevelOrder(maximumDepth: Int) -> LevelOrderFlatteningBidirectionalCollection<Self> {
-		return LevelOrderFlatteningBidirectionalCollection(root: self, maximumDepth: maximumDepth)
+		LevelOrderFlatteningBidirectionalCollection(root: self, maximumDepth: maximumDepth)
 	}
 	
 }

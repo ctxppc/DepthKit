@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 extension RangeReplaceableCollection {
 	
@@ -8,9 +8,9 @@ extension RangeReplaceableCollection {
 	///
 	/// - Returns: A copy of the collection with the contents of `other` appended to it.
 	public func appending(_ element: Element) -> Self {
-		var collection = self
-		collection.append(element)
-		return collection
+		with(self) {
+			$0.append(element)
+		}
 	}
 	
 	/// Returns a copy of the collection with the contents of a given sequence appended to it.
@@ -19,9 +19,9 @@ extension RangeReplaceableCollection {
 	///
 	/// - Returns: A copy of the collection with the contents of `other` appended to it.
 	public func appending<S : Sequence>(contentsOf other: S) -> Self where S.Element == Element {
-		var collection = self
-		collection.append(contentsOf: other)
-		return collection
+		with(self) {
+			$0.append(contentsOf: other)
+		}
 	}
 	
 	/// Returns a copy of the collection after inserting an element at a given index.
@@ -31,9 +31,9 @@ extension RangeReplaceableCollection {
 	///
 	/// - Returns: A copy of `self` after inserting `insertedElement` at `index`.
 	public func inserting(_ insertedElement: Element, at index: Index) -> Self {
-		var collection = self
-		collection.insert(insertedElement, at: index)
-		return collection
+		with(self) {
+			$0.insert(insertedElement, at: index)
+		}
 	}
 	
 	/// Returns a copy of the collection after removing an element at a given index.
@@ -42,9 +42,9 @@ extension RangeReplaceableCollection {
 	///
 	/// - Returns: A copy of `self` after removing the element at `index`.
 	public func removing(at index: Index) -> Self {
-		var collection = self
-		collection.remove(at: index)
-		return collection
+		with(self) {
+			$0.remove(at: index)
+		}
 	}
 	
 }

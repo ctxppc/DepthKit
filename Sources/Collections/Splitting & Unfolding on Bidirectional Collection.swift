@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 extension BidirectionalCollection {
 	
@@ -12,15 +12,11 @@ extension BidirectionalCollection {
 		return (head: prefix(upTo: index(before: endIndex)), tail: tail)
 	}
 	
-}
-
-extension BidirectionalCollection where SubSequence : BidirectionalCollection {
-	
 	/// Returns a sequence over every element, from the last to the first, and the subsequence of elements preceding that element.
 	///
 	/// - Returns: A sequence of every element `tail` in `self`, from the last to the first, and the subsequence `head` of elements that precede `tail` in `self`.
 	public func unfoldingBackward() -> UnfoldSequence<(SubSequence, Element), SubSequence> {
-		return sequence(state: prefix(upTo: endIndex)) { (subsequence: inout SubSequence) in
+		sequence(state: prefix(upTo: endIndex)) { (subsequence: inout SubSequence) in
 			guard let (head, tail) = subsequence.splittingLast() else { return nil }
 			subsequence = head
 			return (head, tail)

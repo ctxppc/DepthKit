@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 public struct KeyedBasicValueDecodingContainer<Key : CodingKey> : KeyedDecodingContainerProtocol {
 	
@@ -27,7 +27,7 @@ public struct KeyedBasicValueDecodingContainer<Key : CodingKey> : KeyedDecodingC
 	
 	// See protocol.
 	public func contains(_ key: Key) -> Bool {
-		return dictionary.keys.contains(decoder.convertedKeyValue(key.stringValue))
+		dictionary.keys.contains(decoder.convertedKeyValue(key.stringValue))
 	}
 	
 	// See protocol.
@@ -39,114 +39,114 @@ public struct KeyedBasicValueDecodingContainer<Key : CodingKey> : KeyedDecodingC
 	
 	// See protocol.
 	public func decode(_ type: Bool.Type, forKey key: Key) throws -> Bool {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: String.Type, forKey key: Key) throws -> String {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: Double.Type, forKey key: Key) throws -> Double {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: Float.Type, forKey key: Key) throws -> Float {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: Int.Type, forKey key: Key) throws -> Int {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: Int8.Type, forKey key: Key) throws -> Int8 {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: Int16.Type, forKey key: Key) throws -> Int16 {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: Int32.Type, forKey key: Key) throws -> Int32 {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: Int64.Type, forKey key: Key) throws -> Int64 {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: UInt.Type, forKey key: Key) throws -> UInt {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: UInt8.Type, forKey key: Key) throws -> UInt8 {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: UInt16.Type, forKey key: Key) throws -> UInt16 {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: UInt32.Type, forKey key: Key) throws -> UInt32 {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	// See protocol.
 	public func decode(_ type: UInt64.Type, forKey key: Key) throws -> UInt64 {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	private func decode<Integer : BinaryInteger & Decodable>(key: Key) throws -> Integer {
-		return try integer(from: rawValue(forKey: key), codingPath: codingPath.appending(key))
+		try integer(from: rawValue(forKey: key), codingPath: codingPath.appending(key))
 	}
 	
 	private func decode<Number : BinaryFloatingPoint & Decodable>(key: Key) throws -> Number {
-		return try number(from: rawValue(forKey: key), codingPath: codingPath.appending(key))
+		try number(from: rawValue(forKey: key), codingPath: codingPath.appending(key))
 	}
 	
 	// See protocol.
 	public func decode<T : Decodable>(_ type: T.Type, forKey key: Key) throws -> T {
-		return try decode(key: key)
+		try decode(key: key)
 	}
 	
 	public func decode<T : Decodable>(key: Key) throws -> T {
-		return try T(from: BasicValueDecoder(from: decoder, key: key, value: rawValue(forKey: key)))
+		try T(from: BasicValueDecoder(from: decoder, key: key, value: rawValue(forKey: key)))
 	}
 	
 	// See protocol.
-	public func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type, forKey key: Key) throws -> KeyedDecodingContainer<NestedKey> where NestedKey : CodingKey {
-		return try BasicValueDecoder(from: decoder, key: key, value: rawValue(forKey: key)).container(keyedBy: type)
+	public func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type, forKey key: Key) throws -> KeyedDecodingContainer<NestedKey> {
+		try BasicValueDecoder(from: decoder, key: key, value: rawValue(forKey: key)).container(keyedBy: type)
 	}
 	
 	// See protocol.
 	public func nestedUnkeyedContainer(forKey key: Key) throws -> UnkeyedDecodingContainer {
-		return try BasicValueDecoder(from: decoder, key: key, value: rawValue(forKey: key)).unkeyedContainer()
+		try BasicValueDecoder(from: decoder, key: key, value: rawValue(forKey: key)).unkeyedContainer()
 	}
 	
 	// See protocol.
 	public func superDecoder() throws -> Decoder {
-		return try superDecoder(forKey: BasicValueCodingKey.super)
+		try superDecoder(forKey: BasicValueCodingKey.super)
 	}
 	
 	// See protocol.
 	public func superDecoder(forKey key: Key) throws -> Decoder {
-		return try superDecoder(forKey: key as CodingKey)
+		try superDecoder(forKey: key as CodingKey)
 	}
 	
 	// See protocol.
 	private func superDecoder(forKey key: CodingKey) throws -> Decoder {
-		return try BasicValueDecoder(from: decoder, key: key, value: rawValue(forKey: key))
+		try BasicValueDecoder(from: decoder, key: key, value: rawValue(forKey: key))
 	}
 	
 	private func rawValue(forKey key: CodingKey) throws -> Any {

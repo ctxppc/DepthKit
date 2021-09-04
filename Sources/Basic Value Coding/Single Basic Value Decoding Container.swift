@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 public struct SingleBasicValueDecodingContainer : SingleValueDecodingContainer {
 	
@@ -22,85 +22,85 @@ public struct SingleBasicValueDecodingContainer : SingleValueDecodingContainer {
 	
 	// See protocol.
 	public func decode(_ type: Bool.Type) throws -> Bool {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: String.Type) throws -> String {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: Double.Type) throws -> Double {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: Float.Type) throws -> Float {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: Int.Type) throws -> Int {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: Int8.Type) throws -> Int8 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: Int16.Type) throws -> Int16 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: Int32.Type) throws -> Int32 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: Int64.Type) throws -> Int64 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: UInt.Type) throws -> UInt {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: UInt8.Type) throws -> UInt8 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: UInt16.Type) throws -> UInt16 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: UInt32.Type) throws -> UInt32 {
-		return try decode()
+		try decode()
 	}
 	
 	// See protocol.
 	public func decode(_ type: UInt64.Type) throws -> UInt64 {
-		return try decode()
+		try decode()
 	}
 	
 	private func decode<Integer : BinaryInteger & Decodable>() throws -> Integer {
-		return try integer(from: value, codingPath: codingPath)
+		try integer(from: value, codingPath: codingPath)
 	}
 	
 	private func decode<Number : BinaryFloatingPoint & Decodable>() throws -> Number {
-		return try number(from: value, codingPath: codingPath)
+		try number(from: value, codingPath: codingPath)
 	}
 	
 	// See protocol.
 	public func decode<T : Decodable>(_ type: T.Type) throws -> T {
-		return try decode()
+		try decode()
 	}
 	
 	/// Decodes the value.

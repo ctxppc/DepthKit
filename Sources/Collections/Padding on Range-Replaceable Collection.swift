@@ -1,4 +1,4 @@
-// DepthKit © 2017–2020 Constantino Tsarouhas
+// DepthKit © 2017–2021 Constantino Tsarouhas
 
 extension RangeReplaceableCollection {
 	
@@ -33,9 +33,9 @@ extension RangeReplaceableCollection {
 	///
 	/// - Returns: A copy of `self` with zero or more insertions of `padding`.
 	public func padded(at index: Index, with padding: Element, toCount targetCount: Int) -> Self {
-		var collection = self
-		collection.pad(at: index, with: padding, toCount: targetCount)
-		return collection
+		with(self) {
+			$0.pad(at: index, with: padding, toCount: targetCount)
+		}
 	}
 	
 	/// Inserts a collection of elements repeatedly at a location in `self` until `self` reaches a certain number of elements.
@@ -72,9 +72,9 @@ extension RangeReplaceableCollection {
 	///
 	/// - Returns: A copy of `self` with zero or more insertions of `padding`.
 	public func padded<C : Collection>(at index: Index, withContentsOf padding: C, toCount targetCount: Int) -> Self where C.Element == Element {
-		var collection = self
-		collection.pad(at: index, withContentsOf: padding, toCount: targetCount)
-		return collection
+		with(self) {
+			$0.pad(at: index, withContentsOf: padding, toCount: targetCount)
+		}
 	}
 	
 }
@@ -115,9 +115,9 @@ extension Array {
 	///
 	/// - Returns: A copy of `self` with zero or more insertions of `padding`.
 	public func padded(at index: Index, with padding: Element, toCount targetCount: Int) -> Array {
-		var array = self
-		array.pad(at: index, with: padding, toCount: targetCount)
-		return array
+		with(self) {
+			$0.pad(at: index, with: padding, toCount: targetCount)
+		}
 	}
 	
 	/// Inserts a collection of elements repeatedly at a location in `self` until `self` reaches a certain number of elements.
@@ -161,9 +161,9 @@ extension Array {
 	///
 	/// - Returns: A copy of `self` with zero or more insertions of `padding`.
 	public func padded<C : Collection>(at index: Index, withContentsOf padding: C, toCount targetCount: Int) -> Array where C.Element == Element {
-		var array = self
-		array.pad(at: index, withContentsOf: padding, toCount: targetCount)
-		return array
+		with(self) {
+			$0.pad(at: index, withContentsOf: padding, toCount: targetCount)
+		}
 	}
 	
 }

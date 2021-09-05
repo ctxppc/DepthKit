@@ -28,7 +28,7 @@ extension BidirectionalCollection where Element == Self {
 	/// - Parameter isLeaf: A function that determines whether a collection is a leaf node, given that collection's index path. The default always returns false.
 	///
 	/// - Returns: A pre-order flattening collection over `self`.
-	public func flattenedInPreOrder(isLeaf: @escaping (PreOrderFlatteningBidirectionalCollection<Self>.Index.Path) -> Bool = { _ in false }) -> PreOrderFlatteningBidirectionalCollection<Self> {
+	public func flattenedInPreOrder(isLeaf: @escaping PreOrderFlatteningBidirectionalCollection<Self>.LeafPredicate = { _, _ in false }) -> PreOrderFlatteningBidirectionalCollection<Self> {
 		PreOrderFlatteningBidirectionalCollection(root: self, isLeaf: isLeaf)
 	}
 	

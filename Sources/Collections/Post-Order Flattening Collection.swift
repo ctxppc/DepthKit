@@ -145,7 +145,6 @@ extension PostOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 }
 
 extension PostOrderFlatteningBidirectionalCollection.Index : Comparable {
-	
 	public static func < (earlier: Self, later: Self) -> Bool {
 		switch (earlier, later) {
 			
@@ -159,13 +158,4 @@ extension PostOrderFlatteningBidirectionalCollection.Index : Comparable {
 			return false
 		}
 	}
-	
-	public static func == (first: Self, other: Self) -> Bool {
-		switch (first, other) {
-			case (.some(indexPath: let first), .some(indexPath: let other)):	return first == other
-			case (.end, .end):													return true
-			default:															return false
-		}
-	}
-	
 }

@@ -1,4 +1,38 @@
-// DepthKit © 2017–2021 Constantino Tsarouhas
+// DepthKit © 2017–2024 Constantino Tsarouhas
+
+extension Sequence {
+	
+	/// Returns the first element in `self` which satisfies a given predicate.
+	public func first(where predicate: (Element) async throws -> Bool) async rethrows -> Element? {
+		for element in self {
+			if try await predicate(element) {
+				return element
+			}
+		}
+		return nil
+	}
+	
+	/// Returns the elements in `self` that satisfy a given predicate.
+	public func filter(_ predicate: (Element) async throws -> Bool) async rethrows -> [Element] {
+		var result: [Element] = []
+		for element in self {
+			if try await predicate(element) {
+				result.append(element)
+			}
+		}
+		return result
+	}
+	
+	/// Returns the elements of `self` transformed using a given function.
+	public func map<T>(_ transform: (Element) async throws -> T) async rethrows -> [T] {
+		var result: [T] = []
+		for element in self {
+			result.append(try await transform(element))
+		}
+		return result
+	}
+	
+}
 
 extension Sequence where Element : Comparable {
 	

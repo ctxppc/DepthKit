@@ -1,4 +1,4 @@
-// DepthKit © 2017–2021 Constantino Tsarouhas
+// DepthKit © 2017–2024 Constantino Tsarouhas
 
 /// Asserts that an index is out of bounds.
 public var indexOutOfBounds: Never {

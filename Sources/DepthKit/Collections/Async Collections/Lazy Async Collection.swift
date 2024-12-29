@@ -1,4 +1,4 @@
-// Protocol © 2024 Constantino Tsarouhas
+// DepthKit © 2024 Constantino Tsarouhas
 
 /// A collection that asynchronously and lazily computes its elements.
 ///
@@ -88,7 +88,7 @@ extension LazyAsyncCollection {
 				index = self.index(after: index)
 			}
 		} else if distance < 0 {
-			for _ in 1...distance {
+			for _ in 1...(-distance) {
 				index = self.index(before: index)
 			}
 		}

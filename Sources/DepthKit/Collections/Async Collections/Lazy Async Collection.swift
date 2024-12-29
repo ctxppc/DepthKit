@@ -44,11 +44,11 @@ public protocol LazyAsyncCollection<Element, Failure> : AsyncSequence {
 	/// The default implementation invokes `index(before:)` or `index(after:)` repeatedly unless `Index` is `Strideable`.
 	func distance(from start: Index, to end: Index) -> Int
 	
-	/// A collection of valid, consecutive indices in a collection, in ascending order.
-	associatedtype Indices : BidirectionalCollection<Index> = LazyAsyncCollectionIndices<Self> where Indices.SubSequence == Indices
-	
 	/// The indices that refer to elements in the collection, in ascending order.
 	var indices: Indices { get }
+	
+	/// A collection of valid, consecutive indices in a collection, in ascending order.
+	associatedtype Indices : BidirectionalCollection<Index> = LazyAsyncCollectionIndices<Self> where Indices.SubSequence == Indices
 	
 	/// A Boolean value indicating whether the collection is empty.
 	///
@@ -59,18 +59,13 @@ public protocol LazyAsyncCollection<Element, Failure> : AsyncSequence {
 	
 	/// The number of elements in the collection.
 	///
-	/// The default implementation returns `indices.count`.
+	/// The default implementation returns `distance(from: startIndex, to: endIndex)`.
 	///
 	/// - Complexity: O(*n*).
 	var count: Int { get }
 	
-	/// Accesses the element at given position.
-	subscript (position: Index) -> Element {
-		get async throws(Failure)
-	}
-	
-	/// A collection representing a contiguous subrange of the collection's elements, with indices in the subsequence corresponding to indices in the original collection.
-	associatedtype SubSequence : LazyAsyncCollection<Element, Failure> where SubSequence.Index == Index, SubSequence.SubSequence == SubSequence
+	/// Returns the element at given position.
+	func element(at position: Index) async throws(Failure) -> Element	// not a subscript due to swiftlang/swift#78379
 	
 	/// Accesses the elements at given positions.
 	///
@@ -78,6 +73,9 @@ public protocol LazyAsyncCollection<Element, Failure> : AsyncSequence {
 	///
 	/// The default implementation returns a lazy asynchronous slice.
 	subscript (positions: Range<Index>) -> SubSequence { get }
+	
+	/// A collection representing a contiguous subrange of the collection's elements, with indices in the subsequence corresponding to indices in the original collection.
+	associatedtype SubSequence : LazyAsyncCollection<Element, Failure> = LazyAsyncSlice<Self> where SubSequence.Index == Index, SubSequence.SubSequence == SubSequence
 	
 }
 
@@ -116,9 +114,9 @@ extension LazyAsyncCollection {
 	
 	public func distance(from start: Index, to end: Index) -> Int {
 		return if start > end {
-			LazyAsyncCollectionIndices(elements: self, bounds: start..<end).count
+			LazyAsyncCollectionIndices(base: self, bounds: start..<end).count
 		} else if end < start {
-			-LazyAsyncCollectionIndices(elements: self, bounds: end..<start).count
+			-LazyAsyncCollectionIndices(base: self, bounds: end..<start).count
 		} else {
 			0
 		}
@@ -136,6 +134,13 @@ extension LazyAsyncCollection {
 	public var first: Element? {
 		get async throws(Failure) {
 			isEmpty ? nil : try await self[startIndex]
+		}
+	}
+	
+	/// Accesses the element at given position.
+	public subscript (position: Index) -> Element {	// not a protocol requirement due to swiftlang/swift#78379
+		get async throws(Failure) {
+			try await element(at: position)
 		}
 	}
 	
@@ -175,25 +180,43 @@ extension LazyAsyncCollection where Index : Strideable, Index.Stride == Int {
 	
 }
 
-public struct LazyAsyncCollectionIndices<Elements : LazyAsyncCollection> : BidirectionalCollection {
+extension LazyAsyncCollection where Indices == LazyAsyncCollectionIndices<Self> {
+	public var indices: Indices {
+		.init(base: self)
+	}
+}
+
+extension LazyAsyncCollection where SubSequence == LazyAsyncSlice<Self> {
+	public subscript (positions: Range<Index>) -> SubSequence {
+		.init(base: self, startIndex: positions.lowerBound, endIndex: positions.upperBound)
+	}
+}
+
+extension LazyAsyncCollection where AsyncIterator == LazyAsyncCollectionIterator<Self> {
+	public func makeAsyncIterator() -> AsyncIterator {
+		.init(over: self)
+	}
+}
+
+public struct LazyAsyncCollectionIndices<Base : LazyAsyncCollection> : BidirectionalCollection {
 	
 	/// Creates a collection of indices for given collection.
-	fileprivate init(elements: Elements) {
-		self.init(elements: elements, bounds: elements.startIndex..<elements.endIndex)
+	fileprivate init(base: Base) {
+		self.init(base: base, bounds: base.startIndex..<base.endIndex)
 	}
 	
 	/// Creates a collection of indices for given collection and within given bounds.
-	fileprivate init(elements: Elements, bounds: Range<Index>) {
-		self.elements = elements
+	fileprivate init(base: Base, bounds: Range<Index>) {
+		self.base = base
 		self.startIndex = bounds.lowerBound
 		self.endIndex = bounds.upperBound
 	}
 	
 	/// The collection.
-	fileprivate let elements: Elements
+	fileprivate let base: Base
 	
 	// See protocol.
-	public typealias Index = Elements.Index
+	public typealias Index = Base.Index
 	
 	// See protocol.
 	public let startIndex: Index
@@ -204,13 +227,13 @@ public struct LazyAsyncCollectionIndices<Elements : LazyAsyncCollection> : Bidir
 	// See protocol.
 	public func index(before index: Index) -> Index {
 		precondition(index > startIndex, "\(index) does not a predecessor in \(self)")
-		return elements.index(before: index)
+		return base.index(before: index)
 	}
 	
 	// See protocol.
 	public func index(after index: Index) -> Index {
 		precondition(index <= endIndex, "\(index) does not have a successor in \(self)")
-		return elements.index(after: index)
+		return base.index(after: index)
 	}
 	
 	// See protocol.
@@ -222,15 +245,9 @@ public struct LazyAsyncCollectionIndices<Elements : LazyAsyncCollection> : Bidir
 	// See protocol.
 	public subscript (positions: Range<Index>) -> Self {
 		precondition(positions.lowerBound >= startIndex && positions.upperBound <= endIndex, "\(positions) is not a subset of \(self)")
-		return .init(elements: elements, bounds: positions)
+		return .init(base: base, bounds: positions)
 	}
 	
-}
-
-extension LazyAsyncCollection where Indices == LazyAsyncCollectionIndices<Self> {
-	public var indices: Indices {
-		.init(elements: self)
-	}
 }
 
 public struct LazyAsyncSlice<Base : LazyAsyncCollection> : LazyAsyncCollection {
@@ -260,44 +277,36 @@ public struct LazyAsyncSlice<Base : LazyAsyncCollection> : LazyAsyncCollection {
 	}
 	
 	// See protocol.
-	public subscript (position: Index) -> Element {
-		get async throws(Failure) {
-			try await base[position]
-		}
+	public func element(at position: Index) async throws(Failure) -> Element {
+		try await base[position]
 	}
 	
 	// See protocol.
-	public subscript(positions: Range<Index>) -> SubSequence {
+	public subscript (positions: Range<Index>) -> SubSequence {
 		.init(base: base, startIndex: positions.lowerBound, endIndex: positions.upperBound)
 	}
 	
 }
 
-public struct LazyAsyncCollectionIterator<Elements : LazyAsyncCollection> : AsyncIteratorProtocol {
+public struct LazyAsyncCollectionIterator<Base : LazyAsyncCollection> : AsyncIteratorProtocol {
 	
-	public typealias Element = Elements.Element
-	public typealias Failure = Elements.Failure
+	public typealias Element = Base.Element
+	public typealias Failure = Base.Failure
 	
 	/// Creates an iterator over given lazy asynchronous collection.
-	fileprivate init(over elements: Elements) {
+	fileprivate init(over elements: Base) {
 		remainingElements = elements[...]
 	}
 	
 	/// The elements remaining in the iterator.
-	private var remainingElements: Elements.SubSequence
+	private var remainingElements: Base.SubSequence
 	
 	// See protocol.
 	public mutating func next() async throws(Failure) -> Element? {
 		guard let first = try await remainingElements.first else { return nil }
-		remainingElements = remainingElements[remainingElements.index(after: remainingElements.startIndex)..<remainingElements.endIndex]
+		let nextStartIndex = remainingElements.index(after: remainingElements.startIndex)
+		remainingElements = remainingElements[nextStartIndex..<remainingElements.endIndex]
 		return first
 	}
 	
-	
-}
-
-extension LazyAsyncCollection where AsyncIterator == LazyAsyncCollectionIterator<Self> {
-	public func makeAsyncIterator() -> AsyncIterator {
-		.init(over: self)
-	}
 }

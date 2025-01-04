@@ -1,4 +1,4 @@
-// DepthKit © 2017–2024 Constantino Tsarouhas
+// DepthKit © 2017–2025 Constantino Tsarouhas
 
 infix operator !! : NilCoalescingPrecedence
 

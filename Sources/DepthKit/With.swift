@@ -1,4 +1,4 @@
-// DepthKit © 2017–2024 Constantino Tsarouhas
+// DepthKit © 2017–2025 Constantino Tsarouhas
 
 /// Modifies given initial value using given modification function, then returns the modified value.
 ///

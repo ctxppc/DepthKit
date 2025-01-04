@@ -1,4 +1,4 @@
-// DepthKit © 2017–2024 Constantino Tsarouhas
+// DepthKit © 2017–2025 Constantino Tsarouhas
 
 /// A collective name that may be based on a Swift type's name.
 public protocol TypeName : Sendable, ExpressibleByStringInterpolation where StringLiteralType == String {

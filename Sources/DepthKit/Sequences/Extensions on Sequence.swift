@@ -24,7 +24,7 @@ extension Sequence {
 	}
 	
 	/// Returns the elements of `self` transformed using a given function.
-	public func map<T, Failure>(_ transform: (Element) async throws(Failure) -> T) async throws(Failure) -> [T] {
+	public func asyncMap<T, E>(_ transform: (Element) async throws(E) -> T) async throws(E) -> [T] {
 		var result: [T] = []
 		for element in self {
 			result.append(try await transform(element))

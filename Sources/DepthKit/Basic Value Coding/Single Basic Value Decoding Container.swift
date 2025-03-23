@@ -16,7 +16,7 @@ public struct SingleBasicValueDecodingContainer : SingleValueDecodingContainer {
 	
 	// See protocol.
 	public func decodeNil() -> Bool {
-		guard let optional = value as? OptionalProtocol else { return false }
+		guard let optional = value as? any OptionalProtocol else { return false }
 		return optional.isNil
 	}
 	

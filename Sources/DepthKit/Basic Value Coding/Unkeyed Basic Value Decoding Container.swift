@@ -33,7 +33,7 @@ public struct UnkeyedBasicValueDecodingContainer : UnkeyedDecodingContainer {
 	
 	// See protocol.
 	public mutating func decodeNil() throws -> Bool {
-		if (try peek(expectedType: Any.self) as? OptionalProtocol).isNil {
+		if (try peek(expectedType: Any.self) as? any OptionalProtocol).isNil {
 			currentIndex += 1
 			return true
 		} else {

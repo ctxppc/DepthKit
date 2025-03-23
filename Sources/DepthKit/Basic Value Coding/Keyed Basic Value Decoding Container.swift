@@ -33,7 +33,7 @@ public struct KeyedBasicValueDecodingContainer<Key : CodingKey> : KeyedDecodingC
 	// See protocol.
 	public func decodeNil(forKey key: Key) throws -> Bool {
 		let anyValue = try rawValue(forKey: key)
-		guard let optional = anyValue as? OptionalProtocol else { return false }
+		guard let optional = anyValue as? any OptionalProtocol else { return false }
 		return optional.isNil
 	}
 	
@@ -156,12 +156,8 @@ public struct KeyedBasicValueDecodingContainer<Key : CodingKey> : KeyedDecodingC
 	
 }
 
-internal protocol OptionalProtocol {
-	var isNil: Bool { get }
-}
-
-extension Optional : OptionalProtocol {
-	var isNil: Bool { return self == nil }
+extension OptionalProtocol {
+	var isNil: Bool { unwrapped == nil }
 }
 
 internal func integer<Integer : BinaryInteger>(from value: Any, codingPath: [CodingKey]) throws -> Integer {

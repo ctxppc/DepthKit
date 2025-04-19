@@ -11,10 +11,12 @@ let package = Package(
 	],
 	dependencies: [
 		.package(url: "https://github.com/apple/swift-algorithms.git", .upToNextMinor(from: "1.2.0")),
+		.package(url: "https://github.com/apple/swift-async-algorithms.git", .upToNextMajor(from: "1.0.3")),
 	],
 	targets: [
 		.target(name: "DepthKit", dependencies: [
 			.product(name: "Algorithms", package: "swift-algorithms"),
+			.product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
 		]),
 		.testTarget(name: "DepthKitTests", dependencies: ["DepthKit"]),
 	],
